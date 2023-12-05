@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:safeguardher/fakecall.dart';
 
 class home_page extends StatefulWidget {
   const home_page({super.key});
@@ -82,6 +83,18 @@ class _home_pageState extends State<home_page> {
                   alignment: Alignment.center,
                   height: 200,
                   width: 200,
+                  child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                          primary: Colors.redAccent,
+                  ),
+                  child: const Text('Login'),
+                    onPressed: () {
+                          Navigator.push(context, new MaterialPageRoute(
+                          builder: (context) =>
+                          new fakecall())
+                          );
+                      },
+                  ),
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(

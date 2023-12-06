@@ -29,7 +29,7 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
         ),
       ),
       Container(
-       // color: Colors.grey,
+       //color: Colors.grey,
         width: 380,
         height: 250,
         margin: EdgeInsets.only(top: 80,left: 60,right: 60),
@@ -51,7 +51,6 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
             ),
             style: ElevatedButton.styleFrom(
               shape: CircleBorder(),
-
               padding: EdgeInsets.all(10),
               backgroundColor: Colors.blue, // <-- Button color
               //foregroundColor: Colors.white, // <-- Splash color

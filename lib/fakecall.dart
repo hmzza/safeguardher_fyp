@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safeguardher/fakecall_now.dart';
 
 class fakecall extends StatefulWidget {
   const fakecall({Key? key}) : super(key: key);
@@ -82,7 +83,7 @@ class _FakeCallState extends State<fakecall>
                     isExpanded: true,
                     elevation: 16,
                     style: TextStyle(color: Colors.white, fontSize: 24),
-                    dropdownColor: Colors.white,
+                    dropdownColor: Colors.grey,
                   ),
                 ),
 
@@ -121,7 +122,7 @@ class _FakeCallState extends State<fakecall>
                     isExpanded: true,
                     elevation: 16,
                     style: TextStyle(color: Colors.white, fontSize: 24),
-                    dropdownColor: Colors.white,
+                    dropdownColor: Colors.grey,
                   ),
                 ),
 
@@ -139,9 +140,15 @@ class _FakeCallState extends State<fakecall>
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             primary: Colors.redAccent,
-                  ),
+                      ),
                           child: const Text('Call Now'),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, new MaterialPageRoute(
+                                builder: (context) =>
+                                new fakecall_now())
+                            );
+
+                          },
                         ),
                       ),
           ),

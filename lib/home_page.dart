@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:safeguardher/fakecall.dart';
+import 'package:safeguardher/fakecall_mainpage.dart';
 
 class home_page extends StatefulWidget {
   const home_page({super.key});
@@ -14,12 +14,6 @@ class _home_pageState extends State<home_page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   icon: Image.asset('assets/backarrow.png'),
-        //   onPressed: () {
-        //     // Handle back button action
-        //   },
-        // ),
         title: Text('Hi, Saba'),
         backgroundColor: Colors.blueGrey,
         elevation: 0,
@@ -27,15 +21,6 @@ class _home_pageState extends State<home_page> {
 
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/backgroundlogin.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children:<Widget> [
@@ -70,6 +55,18 @@ class _home_pageState extends State<home_page> {
                 alignment: Alignment.center,
                 height: 200,
                 width: 200,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent,
+                    ),
+                    child: const Text('Fake Call'),
+                    onPressed: () {
+                      Navigator.push(context, new MaterialPageRoute(
+                          builder: (context) =>
+                          new fakecallmainpage())
+                      );
+                    },
+                  ),
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(
@@ -78,6 +75,7 @@ class _home_pageState extends State<home_page> {
                         fit: BoxFit.cover
                     )
                    ),
+
                   ),
                 Container(
                   alignment: Alignment.center,
@@ -89,10 +87,7 @@ class _home_pageState extends State<home_page> {
                   ),
                   child: const Text('Login'),
                     onPressed: () {
-                          Navigator.push(context, new MaterialPageRoute(
-                          builder: (context) =>
-                          new fakecall())
-                          );
+
                       },
                   ),
                   decoration: BoxDecoration(

@@ -1,6 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:safeguardher/checkmail.dart';
 import 'package:safeguardher/fakecall.dart';
+import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/login.dart';
 import 'package:safeguardher/signup.dart';
 import 'package:safeguardher/forgetpassword.dart';
@@ -16,7 +18,8 @@ void main() {
       'forgetpassword': (context)=>AppBarApp(),
       'checkmail': (context)=>checkmail(),
       'fakecall': (context)=>fakecall(),
-      'home_page': (context)=>home_page()
+      'home_page': (context)=>home_page(),
+      'fakecallmainpage': (context)=>fakecallmainpage()
     },
   ));
 }

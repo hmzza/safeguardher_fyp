@@ -33,7 +33,7 @@ class _fakecall_nowState extends State<fakecall_now> {
                   GestureDetector(
                       child:FloatingActionButton(
                           child: Icon(Icons.call_end, size: 34),
-                          background: Colors.red
+                          backgroundColor: Colors.red, onPressed: () {  },
                       ))
                 ],
 

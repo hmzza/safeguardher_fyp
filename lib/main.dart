@@ -6,6 +6,7 @@ import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/login.dart';
 import 'package:safeguardher/signup.dart';
 import 'package:safeguardher/forgetpassword.dart';
+import 'package:safeguardher/utils/mainScreen.dart';
 
 import 'home_page.dart';
 void main() {
@@ -19,6 +20,7 @@ void main() {
       'checkmail': (context)=>checkmail(),
       'fakecall': (context)=>fakecall(),
       'home_page': (context)=>home_page(),
+      'main_screen': (context)=>MainScreen(),
       'fakecallmainpage': (context)=>fakecallmainpage()
     },
   ));

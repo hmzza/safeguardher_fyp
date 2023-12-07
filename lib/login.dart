@@ -88,7 +88,7 @@ class _myloginState extends State<mylogin> {
 
                     Container(
                       child: TextButton(
-                        child: Text('SignUp'),
+                        child: Text('Sign Up'),
                         onPressed: () {
                           Navigator.push(
                               context,

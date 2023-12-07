@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:safeguardher/accountsettings.dart';
 import 'package:safeguardher/checkmail.dart';
 import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/fakecall_mainpage.dart';
@@ -21,8 +21,8 @@ void main() {
       'fakecall': (context)=>fakecall(),
       'home_page': (context)=>home_page(),
       'main_screen': (context)=>MainScreen(),
+      'account_settings': (context)=>accountsettings(),
       'fakecallmainpage': (context)=>fakecallmainpage()
     },
   ));
 }
-

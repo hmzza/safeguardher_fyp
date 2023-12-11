@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 
 class fakeCallNow extends StatefulWidget {
   const fakeCallNow({Key? key}) : super(key: key);
@@ -21,8 +21,9 @@ class _fakeCallNowState extends State<fakeCallNow> {
     "ABBA G",
     "AMMA",
   ];
-
+  var player;
   bool ringing = false;
+
 
   @override
   void initState() {
@@ -31,35 +32,38 @@ class _fakeCallNowState extends State<fakeCallNow> {
       DeviceOrientation.portraitUp,
     ]);
     audioPlayer = AudioPlayer();
+    player = AudioPlayer(); // Create a player
     playRingtone();
   }
 
   void playRingtone() async {
     try {
-      final audio = AudioCache();
-      audio.loop('ringtone.mp3');
-      setState(() {
-        ringing = true;
-      });
+      final duration = await player.setUrl(
+          "asset:assets/Audio/don.mp3"); // Schemes: (https: | file: | asset: )
+      // player.play(); // Play without waiting for completion
+      await player.play(); // Play while waiting for completion
+      // await player.pause(); // Pause but remain ready to play
+      // await player
+      //     .seek(Duration(seconds: 10)); // Jump to the 10 second position
+      // await player.setSpeed(2.0); // Twice as fast
+      // await player.setVolume(0.5); // Half as loud
+      // await player.stop();
+      ringing = true;
     } catch (e) {
       print('Error playing ringtone: $e');
     }
   }
 
-
   void stopRingtone() async {
-    if (ringing) {
-      await audioPlayer.stop();
-      setState(() {
-        ringing = false;
-      });
-    }
+
+    await player.stop();
+    setState(() {
+      ringing = false;
+    });
   }
 
   void answerCall() {
     stopRingtone();
-    // Add your logic for answering the call here
-    // For example, navigate to another screen or perform actions on call acceptance
   }
 
   @override
@@ -112,6 +116,7 @@ class _fakeCallNowState extends State<fakeCallNow> {
                           backgroundColor: Colors.red,
                           onPressed: () {
                             stopRingtone();
+                           // playRingtone();
                             // Add your logic for declining the call here
                           },
                         ),
@@ -144,3 +149,16 @@ class _fakeCallNowState extends State<fakeCallNow> {
   }
 }
 
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     throw UnimplementedError();
+//   }
+// }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     throw UnimplementedError();
+//   }
+// }

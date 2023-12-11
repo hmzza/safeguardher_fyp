@@ -145,7 +145,7 @@ class _FakeCallState extends State<fakecall>
                           onPressed: () {
                             Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) =>
-                                new fakecall_now())
+                                new fakeCallNow())
                             );
 
                           },

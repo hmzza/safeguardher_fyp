@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/fakecall_now.dart';
+import 'package:safeguardher/utils/custom_app_bar.dart';
 
 class fakecall extends StatefulWidget {
   const fakecall({Key? key}) : super(key: key);
@@ -22,11 +23,7 @@ class _FakeCallState extends State<fakecall>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Fake Call Simulator'),
-        backgroundColor: Colors.blueGrey,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(titleText:'Fake Call Simulator'),
       body: Stack(
         children: <Widget>[
 

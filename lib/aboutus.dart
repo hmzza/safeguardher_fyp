@@ -25,9 +25,9 @@ class _AboutUsState extends State<AboutUs> {
           ),
           Positioned(
               top: 300,
-              left: 40,
+              left: 20,
               child: Container(
-                width: 330,
+                width: 350,
                 height: 350,
                 child: Align(
                   child: Text(

@@ -28,29 +28,8 @@ class _accountsettingsState extends State<accountsettings> {
     });
   }
 
-// This function is triggered when the CircleAvatar is tapped
-//   Future _pickImage() async {
-//     final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-//     if(returnedImage==null) return;
-//     setState(() {
-//       _selectedImage = File(returnedImage!.path);
-//     });
-//     // final ImagePicker _picker = ImagePicker();
-//     // final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-//     //
-//     // if (image != null) {
-//     //   // Use the provider to update the image in the state
-//     //   Provider.of<ProfilePictureProvider>(context, listen: false).setProfileImage(File(image.path));
-//     // }
-//   }
   @override
   Widget build(BuildContext context) {
-    // final profilePicProvider = Provider.of<ProfilePictureProvider>(context);
-    // final profileImage = profilePicProvider.profileImage;
-
-    // final profilePicProvider = Provider.of<ProfilePictureProvider>(context);
-    // File profileImage = profilePicProvider.image as File;
-
     return Scaffold(
         appBar: CustomAppBar(titleText: 'Settings'),
         body: Stack(children: <Widget>[

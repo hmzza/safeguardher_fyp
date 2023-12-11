@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:safeguardher/aboutus.dart';
 import 'package:safeguardher/accountsettings.dart';
 import 'package:safeguardher/checkmail.dart';
 import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/fakecall_mainpage.dart';
+import 'package:safeguardher/helplines.dart';
 import 'package:safeguardher/login.dart';
 import 'package:safeguardher/signup.dart';
 import 'package:safeguardher/forgetpassword.dart';
@@ -22,7 +24,9 @@ void main() {
       'home_page': (context)=>home_page(),
       'main_screen': (context)=>MainScreen(),
       'account_settings': (context)=>accountsettings(),
-      'fakecallmainpage': (context)=>fakecallmainpage()
+      'fakecallmainpage': (context)=>fakecallmainpage(),
+      'aboutUs': (context)=>AboutUs(),
+      'helplines': (context)=>HelpLines(),
     },
   ));
 }

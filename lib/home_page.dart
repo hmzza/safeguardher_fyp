@@ -129,7 +129,7 @@ class _home_pageState extends State<home_page> {
               ),
             ),
             Positioned(
-                left: 260,
+                left: 250,
                 top: 580,
                 child: Text(
                   'SOS Alert',

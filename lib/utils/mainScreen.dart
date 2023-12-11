@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:safeguardher/accountsettings.dart';
 import 'package:safeguardher/fakecall.dart';
+import 'package:safeguardher/helplines.dart';
 import 'package:safeguardher/home_page.dart';
 import 'package:safeguardher/new_test_page.dart';
 
@@ -36,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
               case 1:
               return CupertinoTabView(
                 builder: (context){
-                  return CupertinoPageScaffold(child: fakecall());
+                  return CupertinoPageScaffold(child: HelpLines());
                 },
               );
 

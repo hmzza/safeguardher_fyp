@@ -13,7 +13,6 @@ class home_page extends StatefulWidget {
 }
 
 class _home_pageState extends State<home_page> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,79 +27,117 @@ class _home_pageState extends State<home_page> {
                 ),
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Column(
-                  children: [
-                    Center(
-                      child: Container(
-                          alignment: Alignment.center,
-                          height: 400,
-                          width: 400,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      "assets/images/threatdetection.png"),
-                                  fit: BoxFit.cover)),
-                          child: Padding(
-                            padding: EdgeInsets.all(50),
-                            child: Text(
-                              'Yo Hamza my BITCH!!! 2',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )),
+
+            //THREAT DETECTION ICON
+            Positioned(
+              child: GestureDetector(
+                // or InkWell for ripple effect
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            accountsettings()), // Replace 'YourNewPage' with the actual page you want to navigate to
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 400,
+                  width: 400,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/threatdetection.png"),
+                      fit: BoxFit.cover,
                     ),
-                    Text(
-                      'Yo Hamza my BITCH!!!',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
+                  ),
                 ),
-                Row(
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      height: 200,
-                      width: 200,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.redAccent,
-                        ),
-                        child: const Text('Fake Call'),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) =>
-                                      new fakecallmainpage()));
-                        },
-                      ),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/images/fakecall.png"),
-                              fit: BoxFit.cover)),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      height: 200,
-                      width: 200,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.redAccent,
-                        ),
-                        child: const Text('Login'),
-                        onPressed: () {},
-                      ),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/images/sos.png"),
-                              fit: BoxFit.cover)),
-                    ),
-                  ],
-                )
-              ],
+              ),
             ),
+            Positioned(
+                left: 108,
+                top: 330,
+                child: Text(
+                  'Threat Detection',
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                )),
+
+            //FAKE CALL SIMULATOR ICON
+            Positioned(
+              top: 400,
+              child: GestureDetector(
+                // or InkWell for ripple effect
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            fakecallmainpage()), // Replace 'YourNewPage' with the actual page you want to navigate to
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/fakecall.png"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+                left: 60,
+                top: 580,
+                child: Text(
+                  'Fake Call',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                )),
+
+            //SOS
+            Positioned(
+              left: 200,
+              top: 400,
+              child: GestureDetector(
+                // or InkWell for ripple effect
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            fakecallmainpage()), // Replace 'YourNewPage' with the actual page you want to navigate to
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/sos.png"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+                left: 260,
+                top: 580,
+                child: Text(
+                  'SOS Alert',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                )),
           ],
         ));
   }

@@ -8,7 +8,7 @@ class NewTestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasePage(
       appBarTitle: "New Test Page",
-      bodyStack: Text("FUCK YOU"),
+      bodyStack: Text("Testing"),
     );
   }
 }

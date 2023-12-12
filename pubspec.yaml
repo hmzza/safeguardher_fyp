@@ -34,6 +34,7 @@ dependencies:
   flutter_phone_direct_caller: ^2.1.1
   url_launcher: ^6.2.2
   image_picker: ^1.0.4      # check for the latest version
+  flutter_alarm_clock: ^0.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

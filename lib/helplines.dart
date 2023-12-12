@@ -84,7 +84,9 @@ class _HelpLinesState extends State<HelpLines> {
                     return ListTile(
                       title: Text(helplines[index]['name']!, style: TextStyle(
                         fontSize: 20
-                      ),),
+                      ),
+                      ),
+
                       subtitle: Text(helplines[index]['number']!, style: TextStyle(
                           fontSize: 15
                       )),

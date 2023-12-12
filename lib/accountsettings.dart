@@ -6,6 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safeguardher/aboutus.dart';
+import 'package:safeguardher/changepassword.dart';
+import 'package:safeguardher/editprofile.dart';
+import 'package:safeguardher/helpandsupport.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:safeguardher/utils/imageprovider.dart';
 // import 'package:safeguardher/utils/imageprovider.dart';
@@ -151,7 +154,12 @@ class _accountsettingsState extends State<accountsettings> {
                           borderRadius: BorderRadius.circular(100)),
 
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) =>
+                              new EditProfile())
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
@@ -187,7 +195,12 @@ class _accountsettingsState extends State<accountsettings> {
                           borderRadius: BorderRadius.circular(100)),
 
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) =>
+                              new ChangePwd())
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
@@ -238,7 +251,7 @@ class _accountsettingsState extends State<accountsettings> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 2),
                             child: Text(
-                              'Privacy and Security',
+                              'Guide (User Manual)',
                               style:
                                   TextStyle(fontSize: 20, color: Colors.black),
                             ),
@@ -259,7 +272,12 @@ class _accountsettingsState extends State<accountsettings> {
                           borderRadius: BorderRadius.circular(100)),
 
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) =>
+                              new HelpAndSupport())
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),

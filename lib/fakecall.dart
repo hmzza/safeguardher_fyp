@@ -17,10 +17,19 @@ class _FakeCallState extends State<fakecall>
   final List<String> language = ['Urdu', 'Punjabi', 'Pashto', 'Sindhi','Balochi'];
   String? selectedlang = 'Urdu';
 
-
   get selectedItem => null;
 
+  final myController = TextEditingController();
+
   @override
+  void dispose()
+  {
+    myController.dispose();
+    super.dispose();
+  }
+
+  @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(titleText:'Fake Call Simulator'),
@@ -35,10 +44,12 @@ class _FakeCallState extends State<fakecall>
               ),
             ),
           ),
+
           Container(
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.1, right: 65, left: 65 ),
             child: TextField(
+              controller: myController,
               decoration: InputDecoration(
                   fillColor: Colors.grey.shade50,
                   filled: true,
@@ -49,6 +60,7 @@ class _FakeCallState extends State<fakecall>
               ),
             ),
           ),
+
           Container(
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.2, right: 65, left: 65 ),
@@ -142,7 +154,7 @@ class _FakeCallState extends State<fakecall>
                           onPressed: () {
                             Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) =>
-                                new fakeCallNow())
+                                new fakeCallNow(value: myController.text))
                             );
 
                           },

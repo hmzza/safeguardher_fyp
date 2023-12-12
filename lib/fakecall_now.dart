@@ -34,7 +34,7 @@ class _fakeCallNowState extends State<fakeCallNow>
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    audioPlayer = AudioPlayer();
+    //audioPlayer = AudioPlayer();
     player = AudioPlayer(); // Create a player
     playRingtone();
   }
@@ -51,8 +51,8 @@ class _fakeCallNowState extends State<fakeCallNow>
     }
   }
 
-  void stopRingtone() async {
-
+  void stopRingtone() async
+  {
     await player.stop();
     setState(() {
       ringing = false;

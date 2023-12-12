@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/fakecall.dart';
+import 'package:safeguardher/schedule_fakecall.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 
 class fakecallmainpage extends StatefulWidget {
@@ -61,7 +62,13 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
         height: 250,
         margin: EdgeInsets.only(top:400,left: 60,right: 60),
         child:ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, new MaterialPageRoute(
+                builder: (context) =>
+                new schedule_fakecall())
+            );
+
+          },
           child: Container(
               //color: Colors.white,
               height: 50,

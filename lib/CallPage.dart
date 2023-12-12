@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'package:flutter/services.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:safeguardher/fakecall.dart';
 
@@ -20,13 +21,57 @@ class callpage extends StatefulWidget {
 class _callpageState extends State<callpage> {
   Duration duration = Duration();
   Timer? timer;
+  //var player;
+  bool audio_playing = false;
+  AudioPlayer player = AudioPlayer();
+  bool isSpeakerEnabled = false;
 
   @override
  void initState() {
     super.initState();
 
     startTimer();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    player = AudioPlayer();
+    playAudio();
   }
+  void playAudio() async {
+    try {
+      // Set the audio source
+      final duration = await player.setUrl("asset:assets/Audio/mavra.mp3");
+
+      // Set audio output to earpiece when starting audio
+      //await player.setAudioOutput(AudioOutput.earpiece);
+
+      await player.play();
+      audio_playing = true;
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
+  }
+
+
+  void stopAudio() async {
+    await player.stop();
+    setState(() {
+      audio_playing = false;
+    });
+  }
+  void toggleSpeaker() async {
+    if (isSpeakerEnabled) {
+      // Switch to earpiece speaker
+      //await player.setAudioOutput(AudioOutput.earpiece);
+    } else {
+      // Switch to main speaker
+      //await player.setAudioOutput(AudioOutput.speaker);
+    }
+    setState(() {
+      isSpeakerEnabled = !isSpeakerEnabled;
+    });
+  }
+
 
   void addTime() {
 
@@ -90,9 +135,18 @@ class _callpageState extends State<callpage> {
                   ),
                   Column(
                     children: [
-                      Icon(Icons.volume_up_outlined, color: Colors.white, size: 32),
+                    GestureDetector(
+                    onTap: toggleSpeaker,
+                    child: Icon(
+                      isSpeakerEnabled ? Icons.volume_up_outlined : Icons.hearing,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                  ),
+
                       Text("Speaker"),
                     ],
+
                   ),
                 ],
               ),
@@ -131,6 +185,7 @@ class _callpageState extends State<callpage> {
                           child: Icon(Icons.call_end, size: 37),
                           backgroundColor: Colors.red,
                           onPressed: () {
+                            stopAudio();
                             Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) =>new fakecall())
                             );

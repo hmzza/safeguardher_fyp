@@ -19,7 +19,7 @@ void main() {
     debugShowCheckedModeBanner: false,
     routes: {
       'login': (context)=>mylogin(),
-      'signup': (context)=>signup(),
+      'signup': (context)=>SignUp(),
       'forgetpassword': (context)=>AppBarApp(),
       'checkmail': (context)=>checkmail(),
       'fakecall': (context)=>fakecall(),

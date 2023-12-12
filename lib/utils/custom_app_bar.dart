@@ -20,11 +20,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Text(
             titleText,
-            style: TextStyle(color: Colors.white, fontSize: 25),
+            style: TextStyle(color: Colors.white, fontSize: 20),
           )
         ],
       ),
-      backgroundColor: Color(0xff504949), // Customize your AppBar theme here
+      backgroundColor: Color(0xff463344), // Customize your AppBar theme here
       elevation: 0,
     );
   }

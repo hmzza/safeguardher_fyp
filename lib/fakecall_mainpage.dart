@@ -3,6 +3,8 @@ import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/schedule_fakecall.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 
+import 'fakecall_now.dart';
+
 class fakecallmainpage extends StatefulWidget {
   const fakecallmainpage({super.key});
 
@@ -65,7 +67,7 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
           onPressed: () {
             Navigator.push(context, new MaterialPageRoute(
                 builder: (context) =>
-                new schedule_fakecall())
+                new fakeCallNow(value: '',))
             );
 
           },

@@ -69,8 +69,7 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(height: 40), // Spacing before the save button
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white, // Background color
-                    onPrimary: Colors.pink, // Text color
+                    foregroundColor: Colors.pink, backgroundColor: Colors.white, // Text color
                   ),
                   onPressed: () {
                     // Implement save functionality

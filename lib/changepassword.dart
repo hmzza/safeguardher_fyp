@@ -80,8 +80,7 @@ class _ChangePwdState extends State<ChangePwd> {
                     SizedBox(height: 30),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white, // Button color
-                        onPrimary: Colors.red, // Text color
+                        foregroundColor: Colors.red, backgroundColor: Colors.white, // Text color
                       ),
                       onPressed: _changePassword,
                       child: Text('Reset Password'),

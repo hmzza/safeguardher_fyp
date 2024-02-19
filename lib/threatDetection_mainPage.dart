@@ -15,7 +15,7 @@ class _ThreatDetectState extends State<ThreatDetect> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(titleText: 'Threat Detection'),
+        appBar: CustomAppBar(titleText: 'Threat Detection'),
         body: Stack(
           children: [
             Container(
@@ -26,11 +26,7 @@ class _ThreatDetectState extends State<ThreatDetect> {
                 ),
               ),
             ),
-
-
           ],
-        )
-
-    );
+        ));
   }
 }

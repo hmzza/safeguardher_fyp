@@ -38,7 +38,7 @@ class _home_pageState extends State<home_page> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ThreatDetect()), // Replace 'YourNewPage' with the actual page you want to navigate to
+                            ThreatDetectionMainPage()), // Replace 'YourNewPage' with the actual page you want to navigate to
                   );
                 },
                 child: Container(

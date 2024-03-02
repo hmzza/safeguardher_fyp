@@ -30,10 +30,10 @@ class _ThreatDetectionMainPageState extends State<ThreatDetectionMainPage> {
 
   Future<void> loadLabels() async {
     try {
-      final labelList = await rootBundle.loadString('assets/tflite/yamnet_labels.csv');
-      final labels = labelList.split('\n');
+      // final labelList = await rootBundle.loadString('assets/tflite/yamnet_labels.csv');
+      // final labels = labelList.split('\n');
       setState(() {
-        _labels = labels;
+        // _labels = labels;
       });
     } catch (e) {
       print('Failed to load labels: $e');
@@ -47,11 +47,16 @@ class _ThreatDetectionMainPageState extends State<ThreatDetectionMainPage> {
     }
 
     // Prepare the input tensor
-    Tensor inputTensor = _interpreter!.getInputTensor(0);
-    inputTensor.data = soundData as Uint8List;
+    try {
+      Tensor inputTensor = _interpreter!.getInputTensor(0);
+      inputTensor.data = soundData as Uint8List;
+      // Run the model
+      _interpreter!.invoke();
+    }
+    catch(e){
+      print('\n\n!!!!!!!!: $e \n\n\n\n');
+    }
 
-    // Run the model
-    //await _interpreter!.invoke();
 
     // Fetch the output tensor
     Tensor outputTensor = _interpreter!.getOutputTensor(0);

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:safeguardher/SOSGeneration.dart';
 import 'package:safeguardher/accountsettings.dart';
 import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/threatDetection_mainPage.dart';
@@ -113,7 +114,7 @@ class _home_pageState extends State<home_page> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            fakecallmainpage()), // Replace 'YourNewPage' with the actual page you want to navigate to
+                            SOSGeneration()), // Replace 'YourNewPage' with the actual page you want to navigate to
                   );
                 },
                 child: Container(

@@ -688,10 +688,11 @@ packages:
   telephony:
     dependency: "direct main"
     description:
-      name: telephony
-      sha256: "821e074acec3c611e48edadd50a6d9fef864943771a545da7924adcc8509ada9"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: develop
+      resolved-ref: "1755d7c19566017a53ce2d7835f64b85e79f3265"
+      url: "https://github.com/suhardik/s_telephony.git"
+    source: git
     version: "0.2.0"
   term_glyph:
     dependency: transitive

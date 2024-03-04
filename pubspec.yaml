@@ -47,7 +47,10 @@ dependencies:
   tflite_flutter: ^0.10.4
   icon_forest: ^1.1.8
   geolocator: ^11.0.0
-  telephony: ^0.2.0
+  telephony:
+    git:
+      url: https://github.com/suhardik/s_telephony.git
+      ref: develop
 
 dev_dependencies:
   flutter_test:

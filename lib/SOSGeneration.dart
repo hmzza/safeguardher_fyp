@@ -11,7 +11,7 @@ class SOSGeneration extends StatefulWidget {
 
 class _SOSGenerationState extends State<SOSGeneration> {
   final Telephony telephony = Telephony.instance;
-  final List<String> contactNumbers = ['+923067882240', '+923317770723']; // Replace with actual numbers
+  final List<String> contactNumbers = ['+923067882240', '+923317770723','+923341345552','+923365008261']; // Replace with actual numbers
 
   @override
   Widget build(BuildContext context) {

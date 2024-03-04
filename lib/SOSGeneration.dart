@@ -11,14 +11,23 @@ class SOSGeneration extends StatefulWidget {
   _SOSGenerationState createState() => _SOSGenerationState();
 }
 
-class _SOSGenerationState extends State<SOSGeneration> {
+class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProviderStateMixin {
   final Telephony telephony = Telephony.instance;
-  List<String> contactNumbers = []; // Will be dynamically loaded
+  List<String> contactNumbers = [];
+  AnimationController? _animationController;
 
   @override
   void initState() {
     super.initState();
     _loadSavedContactNumbers();
+    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController!.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController?.dispose();
+    super.dispose();
   }
 
   void _loadSavedContactNumbers() async {
@@ -124,22 +133,28 @@ class _SOSGenerationState extends State<SOSGeneration> {
                     ),
                   ),
                 ),
-                Text(
-                  "WARNING !",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                FadeTransition(opacity: _animationController!,
+                 child: Text(
+                    "WARNING !",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                Text(
-                  "Once you press this button\nSOS will be sent!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+
+                FadeTransition(
+                  opacity: _animationController!,
+                  child: Text(
+                    "Once you press this button\nSOS will be sent!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],

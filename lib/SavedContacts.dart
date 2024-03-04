@@ -84,8 +84,9 @@ class _SavedContactsState extends State<SavedContacts> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff463344),
         onPressed: _navigateAndRefresh,
-        child: Icon(Icons.edit),
+        child: Icon(Icons.add),
         tooltip: 'Edit Contacts',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

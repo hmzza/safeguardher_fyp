@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:safeguardher/SavedContacts.dart';
 import 'package:safeguardher/accountsettings.dart';
 import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/helplines.dart';
 import 'package:safeguardher/home_page.dart';
 import 'package:safeguardher/new_test_page.dart';
+
+import '../CustomContacts.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -44,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
               case 2:
               return CupertinoTabView(
                 builder: (context){
-                  return CupertinoPageScaffold(child: NewTestPage());
+                  return CupertinoPageScaffold(child: SavedContacts());
                 },
               );
 

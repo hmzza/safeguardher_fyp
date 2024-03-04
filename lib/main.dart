@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safeguardher/CustomContacts.dart';
 import 'package:safeguardher/aboutus.dart';
 import 'package:safeguardher/accountsettings.dart';
 import 'package:safeguardher/changepassword.dart';
@@ -31,6 +32,7 @@ void main() {
       'helplines': (context)=>HelpLines(),
       'editprofile': (context)=>EditProfile(),
       'changepassword': (context)=>ChangePwd(),
+      'customcontacts': (context)=>CustomContacts(),
     },
   ));
 }

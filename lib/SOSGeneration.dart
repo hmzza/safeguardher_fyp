@@ -1,8 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:telephony/telephony.dart';
+import 'package:contacts_service/contacts_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SOSGeneration extends StatefulWidget {
   @override
@@ -11,26 +13,27 @@ class SOSGeneration extends StatefulWidget {
 
 class _SOSGenerationState extends State<SOSGeneration> {
   final Telephony telephony = Telephony.instance;
-  final List<String> contactNumbers = ['+923067882240', '+923317770723','+923341345552','+923365008261']; // Replace with actual numbers
+  List<String> contactNumbers = []; // Will be dynamically loaded
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('SOS Alert Page'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            sendSOSAlert();
-          },
-          child: Text('Send SOS'),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: Colors.red, // Text color
-          ),
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    _loadSavedContactNumbers();
+  }
+
+  void _loadSavedContactNumbers() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? savedContactIds = prefs.getStringList('selectedContacts');
+    if (savedContactIds != null && savedContactIds.isNotEmpty) {
+      final Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
+      final List<String> numbers = contacts
+          .where((contact) => savedContactIds.contains(contact.identifier))
+          .expand((contact) => contact.phones!.map((phone) => phone.value!))
+          .toList();
+      setState(() {
+        contactNumbers = numbers;
+      });
+    }
   }
 
   void sendSOSAlert() async {
@@ -47,13 +50,15 @@ class _SOSGenerationState extends State<SOSGeneration> {
     }
 
     final bool? smsPermissionGranted = await telephony.requestSmsPermissions;
-    if (smsPermissionGranted != true) {
+    if (!smsPermissionGranted!) {
       _showSnackbar(context, "SMS permission is required to send SOS messages.");
       return;
     }
 
-    final String message = "SOS! I need help! My location is: Lat: ${position.latitude}, Lng: ${position.longitude}";
-    contactNumbers.forEach((number) async {
+    final String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}";
+    final String message = "SOS! I need help! Here is my current location: $googleMapsUrl";
+
+    for (String number in contactNumbers) {
       await telephony.sendSms(
         to: number,
         message: message,
@@ -65,7 +70,7 @@ class _SOSGenerationState extends State<SOSGeneration> {
           }
         },
       );
-    });
+    }
   }
 
   Future<Position?> _determinePosition() async {
@@ -73,7 +78,6 @@ class _SOSGenerationState extends State<SOSGeneration> {
     if (!serviceEnabled) {
       return null;
     }
-
     return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
 
@@ -83,8 +87,66 @@ class _SOSGenerationState extends State<SOSGeneration> {
   }
 
   void _showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(titleText: 'SOS'),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/backgroundlogin.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    sendSOSAlert();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 400,
+                    width: 400,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/sos.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                Text(
+                  "WARNING !",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "Once you press this button\nSOS will be sent!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

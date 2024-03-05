@@ -71,7 +71,7 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
       await telephony.sendSms(
         to: number,
         message: message,
-        statusListener: (SendStatus status) {
+        statusListener: (SendStatus status){
           if (status == SendStatus.SENT) {
             _showSnackbar(context, "SOS Alert sent to $number.");
           } else if (status == SendStatus.DELIVERED) {

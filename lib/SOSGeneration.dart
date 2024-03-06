@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:telephony/telephony.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:vibration/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SOSGeneration extends StatefulWidget {
@@ -15,6 +17,7 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
   final Telephony telephony = Telephony.instance;
   List<String> contactNumbers = [];
   AnimationController? _animationController;
+  Color _warningTextColor = Colors.white; // Initial color of the WARNING text
 
   @override
   void initState() {
@@ -71,7 +74,7 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
       await telephony.sendSms(
         to: number,
         message: message,
-        statusListener: (SendStatus status){
+        statusListener: (SendStatus status) {
           if (status == SendStatus.SENT) {
             _showSnackbar(context, "SOS Alert sent to $number.");
           } else if (status == SendStatus.DELIVERED) {
@@ -93,6 +96,21 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
   Future<PermissionStatus> _requestLocationPermission() async {
     final PermissionStatus status = await Permission.location.request();
     return status;
+  }
+
+  void _onSOSPressed() {
+    setState(() {
+      _warningTextColor = Colors.red; // Change text color to red
+    });
+
+    sendSOSAlert(); // Send the SOS alert
+
+    // Reset the warning text color back to white after 10 seconds
+    Timer(Duration(seconds: 10), () {
+      setState(() {
+        _warningTextColor = Colors.white;
+      });
+    });
   }
 
   void _showSnackbar(BuildContext context, String message) {
@@ -117,34 +135,18 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    sendSOSAlert();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 400,
-                    width: 400,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/sos.png"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                FadeTransition(opacity: _animationController!,
-                 child: Text(
+                //WARNING TEXTS
+                Text(
                     "WARNING !",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: _warningTextColor, // Dynamically change the color
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
 
+                SizedBox(height: 20),
                 FadeTransition(
                   opacity: _animationController!,
                   child: Text(
@@ -157,6 +159,32 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
                     ),
                   ),
                 ),
+                SizedBox(height: 40),
+
+
+                //SOS BUTTON
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () async {
+                      // Your logic for what happens when the SOS is pressed
+                      if (await Vibration.hasVibrator() ?? false) {
+                        Vibration.vibrate(duration: 1000); // Vibrate for 500 milliseconds
+                      }
+                      print('SOS Button Pressed');
+                    },
+                    child: Container(
+                      width: 400, // Specify the width
+                      height: 400, // Specify the height
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/sos.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),

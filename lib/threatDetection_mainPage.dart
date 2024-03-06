@@ -1,103 +1,165 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
+import 'dart:async';
 
-class ThreatDetectionMainPage extends StatefulWidget {
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
   @override
-  _ThreatDetectionMainPageState createState() => _ThreatDetectionMainPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: AudioRecorderUploader(),
+    );
+  }
 }
 
-class _ThreatDetectionMainPageState extends State<ThreatDetectionMainPage> {
-  Interpreter? _interpreter;
-  List<String>? _labels;
+class AudioRecorderUploader extends StatefulWidget {
+  @override
+  _AudioRecorderUploaderState createState() => _AudioRecorderUploaderState();
+}
+
+class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
+  FlutterSoundRecorder _audioRecorder = FlutterSoundRecorder();
+  bool _isRecorderInitialized = false;
+  bool _isRecording = false;
+  String _response = 'Press the button to record and upload audio.';
+  String? filePath;
 
   @override
   void initState() {
     super.initState();
-    loadModel();
-    loadLabels();
+    _requestPermissionsAndInit();
+    getFileName();
   }
 
-  Future<void> loadModel() async {
-    try {
-      _interpreter = await Interpreter.fromAsset('assets/tflite/correct_yamnet.tflite');
-      print('Model loaded successfully');
-    } catch (e) {
-      print('Failed to load the model: $e');
-    }
-  }
-
-  Future<void> loadLabels() async {
-    try {
-      // final labelList = await rootBundle.loadString('assets/tflite/yamnet_labels.csv');
-      // final labels = labelList.split('\n');
+  Future<void> _requestPermissionsAndInit() async {
+    print("_requestPermissionsAndInit data");
+    var micStatus = await Permission.microphone.request();
+    var storageStatus = await Permission.storage.request();
+    print(micStatus);
+    print(storageStatus);
+    if (micStatus != PermissionStatus.granted || storageStatus != PermissionStatus.granted) {
       setState(() {
-        // _labels = labels;
+        _response = 'Microphone or Storage permission not granted';
       });
-    } catch (e) {
-      print('Failed to load labels: $e');
-    }
-  }
-
-  Future<void> classifySound(Float32List soundData) async {
-    if (_interpreter == null || _labels == null) {
-      print('Interpreter or labels not initialized');
       return;
     }
 
-    // Prepare the input tensor
+    await _initRecorder();
+  }
+
+  Future<void> getFileName() async {
+    Directory tempDir = await getTemporaryDirectory();
+    filePath = '${tempDir.path}/temp.wav';
+  }
+
+  Future<void> _initRecorder() async {
     try {
-      Tensor inputTensor = _interpreter!.getInputTensor(0);
-      inputTensor.data = soundData as Uint8List;
-      // Run the model
-      _interpreter!.invoke();
+      await _audioRecorder.openRecorder();
+      _audioRecorder.setSubscriptionDuration(const Duration(milliseconds: 500));
+      setState(() {
+        _isRecorderInitialized = true;
+      });
+    } catch (e) {
+      setState(() {
+        _response = 'Failed to initialize recorder: $e';
+      });
     }
-    catch(e){
-      print('\n\n!!!!!!!!: $e \n\n\n\n');
+  }
+
+  Future<void> _startRecording() async {
+
+    try {
+      await _audioRecorder.startRecorder(toFile: filePath);
+      setState(() {
+        _isRecording = true;
+        _response = 'Recording...';
+      });
+    } catch (e) {
+      setState(() {
+        _response = 'Failed to start recording: $e';
+      });
     }
+  }
 
+  Future<void> _stopRecordingAndUpload() async {
+    print("_stopRecordingAndUpload:");
+    print(filePath);
+    try {
+      await _audioRecorder.stopRecorder();
+      setState(() {
+        _isRecording = false;
+      });
+      if (filePath != null) {
+        _response = 'Uploading...';
+        await _uploadFile(filePath!);
+      } else {
+        setState(() {
+          _response = 'Recording failed, file path is null';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _response = 'Failed to stop recording: $e';
+      });
+    }
+  }
 
-    // Fetch the output tensor
-    Tensor outputTensor = _interpreter!.getOutputTensor(0);
-    Float32List outputData = outputTensor.data as Float32List;
+  Future<void> _uploadFile(String filePath) async {
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse('https://6b5e-115-186-57-250.ngrok-free.app/process_audio')); // Update with your endpoint
+      request.files.add(await http.MultipartFile.fromPath('audio', filePath));
+      var response = await request.send();
 
-    // Determine the highest probability label index
-    int topClassIndex = argMax(outputData);
-    String inferredClass = _labels![topClassIndex];
+      final respStr = await response.stream.bytesToString();
 
-    setState(() {
-      print('The main sound is: $inferredClass');
-    });
+      if (response.statusCode == 200) {
+        setState(() {
+          _response = 'Upload successful: $respStr';
+        });
+      } else {
+        setState(() {
+          _response = 'Failed to upload audio. Response code: ${response.statusCode}';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _response = 'Failed to upload file: $e';
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioRecorder.closeRecorder();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Threat Detection'),
-      ),
+      appBar: AppBar(title: Text('Audio Recorder & Uploader')),
       body: Center(
-        child: Text('Awaiting sound classification...'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: _isRecorderInitialized && !_isRecording ? _startRecording : null,
+              child: Text('Start Recording'),
+            ),
+            ElevatedButton(
+              onPressed: _isRecording ? _stopRecordingAndUpload : null,
+              child: Text('Stop and Upload'),
+            ),
+            SizedBox(height: 20),
+            Text(_response),
+          ],
+        ),
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _interpreter?.close();
-    super.dispose();
-  }
-}
-
-int argMax(Float32List list) {
-  int maxIndex = 0;
-  double maxValue = list[0];
-  for (int i = 1; i < list.length; i++) {
-    if (list[i] > maxValue) {
-      maxValue = list[i];
-      maxIndex = i;
-    }
-  }
-  return maxIndex;
 }

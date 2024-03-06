@@ -39,7 +39,7 @@ class _home_pageState extends State<home_page> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ThreatDetectionMainPage()), // Replace 'YourNewPage' with the actual page you want to navigate to
+                            AudioRecorderUploader()), // Replace 'YourNewPage' with the actual page you want to navigate to
                   );
                 },
                 child: Container(

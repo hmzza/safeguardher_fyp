@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safeguardher/CustomContacts.dart';
 import 'package:safeguardher/aboutus.dart';
 import 'package:safeguardher/accountsettings.dart';
 import 'package:safeguardher/changepassword.dart';
@@ -9,6 +8,7 @@ import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/helplines.dart';
 import 'package:safeguardher/login.dart';
+import 'package:safeguardher/simple_recorder.dart';
 import 'package:safeguardher/signup.dart';
 import 'package:safeguardher/forgetpassword.dart';
 import 'package:safeguardher/utils/mainScreen.dart';
@@ -20,6 +20,7 @@ void main() {
     debugShowCheckedModeBanner: false,
     routes: {
       'login': (context)=>mylogin(),
+      'simple_recorder': (context)=>SimpleRecorder(),
       'signup': (context)=>SignUp(),
       'forgetpassword': (context)=>AppBarApp(),
       'checkmail': (context)=>checkmail(),
@@ -32,7 +33,6 @@ void main() {
       'helplines': (context)=>HelpLines(),
       'editprofile': (context)=>EditProfile(),
       'changepassword': (context)=>ChangePwd(),
-      'customcontacts': (context)=>CustomContacts(),
     },
   ));
 }

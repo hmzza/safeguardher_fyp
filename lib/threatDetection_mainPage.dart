@@ -28,7 +28,7 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
   FlutterSoundRecorder _audioRecorder = FlutterSoundRecorder();
   bool _isRecorderInitialized = false;
   String _response = 'Press the button to start continuous recording.';
-  late Timer _timer;
+  late Timer? _timer;
 
   @override
   void initState() {
@@ -68,19 +68,33 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
       _response = 'Recording started...';
     });
 
-    const chunkDuration = Duration(seconds: 5);
-    _timer = Timer.periodic(chunkDuration, (timer) async {
+    const chunkDuration = Duration(seconds: 15);
+
+    // Function to handle recording logic
+    Future<void> _recordChunk() async {
+      print("Timer Starting");
       final tempDir = await getTemporaryDirectory();
       final filePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.wav';
       await _audioRecorder.startRecorder(toFile: filePath);
-      await Future.delayed(chunkDuration); // Wait for 5 seconds
+      await Future.delayed(chunkDuration); // Wait for 15 seconds
       await _audioRecorder.stopRecorder();
+      print("Timer Ending");
       await _uploadFile(filePath);
+    }
+
+    // Start recording immediately
+    await _recordChunk();
+
+    // Then continue recording every 15 seconds
+    _timer = Timer.periodic(chunkDuration, (timer) async {
+      await _recordChunk();
     });
   }
 
+
   Future<void> _stopRecording() async {
-    _timer.cancel();
+    _timer!.cancel();
+    _timer = null;
     await _audioRecorder.stopRecorder();
     setState(() {
       _response = 'Recording stopped.';
@@ -94,13 +108,15 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
       var response = await request.send();
 
       final respStr = await response.stream.bytesToString();
+      print("DATA:");
+      print(jsonDecode(respStr));
       if (response.statusCode == 200) {
         // Assuming the response body contains a JSON object with a boolean field "hateSpeech"
         final decodedResp = jsonDecode(respStr); // Decode the JSON response
         final bool hateSpeechDetected = decodedResp['hateSpeech'] ?? false; // Check for hate speech detection
-
+        print(hateSpeechDetected);
         if (hateSpeechDetected) {
-          _timer.cancel();
+          _timer!.cancel();
           await _audioRecorder.stopRecorder(); // Ensure recording is stopped
           setState(() {
             _response = 'Hate speech detected. Recording stopped.';
@@ -122,7 +138,7 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
   @override
   void dispose() {
     _audioRecorder.closeRecorder();
-    _timer.cancel();
+    _timer!.cancel();
     super.dispose();
   }
 

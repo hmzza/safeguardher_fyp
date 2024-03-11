@@ -103,7 +103,7 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
 
   Future<void> _uploadFile(String filePath) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse('https://cc6f-58-65-135-186.ngrok-free.app/process'));
+      var request = http.MultipartRequest('POST', Uri.parse('https://9fbe-115-186-57-250.ngrok-free.app/process'));
       request.files.add(await http.MultipartFile.fromPath('file', filePath));
       var response = await request.send();
 

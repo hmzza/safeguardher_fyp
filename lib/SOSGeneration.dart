@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:safeguardher/utils/custom_app_bar.dart';
+import 'package:safeguardher/utils/custom_app_bar.dart'; // Ensure you have this custom app bar in your project
 import 'package:telephony/telephony.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:vibration/vibration.dart';
@@ -17,7 +17,7 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
   final Telephony telephony = Telephony.instance;
   List<String> contactNumbers = [];
   AnimationController? _animationController;
-  Color _warningTextColor = Colors.white; // Initial color of the WARNING text
+  Color _warningTextColor = Colors.white;
 
   @override
   void initState() {
@@ -48,6 +48,22 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
     }
   }
 
+  Future<Position?> _determinePosition() async {
+    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return null;
+    }
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+  Future<PermissionStatus> _requestLocationPermission() async {
+    return await Permission.location.request();
+  }
+
+  void _showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
   void sendSOSAlert() async {
     final PermissionStatus locationPermissionStatus = await _requestLocationPermission();
     if (locationPermissionStatus != PermissionStatus.granted) {
@@ -75,37 +91,29 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
         to: number,
         message: message,
         statusListener: (SendStatus status) {
-          if (status == SendStatus.SENT) {
-            _showSnackbar(context, "SOS Alert sent to $number.");
-          } else if (status == SendStatus.DELIVERED) {
-            _showSnackbar(context, "SOS Alert delivered to $number.");
-          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (status == SendStatus.SENT) {
+              _showSnackbar(context, "SOS Alert sent to $number.");
+            } else if (status == SendStatus.DELIVERED) {
+              _showSnackbar(context, "SOS Alert delivered to $number.");
+            }
+          });
         },
       );
     }
   }
 
-  Future<Position?> _determinePosition() async {
-    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return null;
-    }
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  }
-
-  Future<PermissionStatus> _requestLocationPermission() async {
-    final PermissionStatus status = await Permission.location.request();
-    return status;
-  }
-
-  void _onSOSPressed() {
+  void _onSOSPressed() async {
     setState(() {
-      _warningTextColor = Colors.red; // Change text color to red
+      _warningTextColor = Colors.red;
     });
 
-    sendSOSAlert(); // Send the SOS alert
+    if (await Vibration.hasVibrator() ?? false) {
+      Vibration.vibrate(duration: 500); // Vibrate for 500 milliseconds
+    }
 
-    // Reset the warning text color back to white after 10 seconds
+    sendSOSAlert();
+
     Timer(Duration(seconds: 10), () {
       setState(() {
         _warningTextColor = Colors.white;
@@ -113,14 +121,10 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
     });
   }
 
-  void _showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(titleText: 'SOS'),
+      appBar: CustomAppBar(titleText: 'SOS'), // Make sure this matches your custom app bar
       body: Stack(
         children: <Widget>[
           Container(
@@ -135,17 +139,15 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                //WARNING TEXTS
                 Text(
-                    "WARNING !",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: _warningTextColor, // Dynamically change the color
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  "WARNING !",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: _warningTextColor,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
                   ),
-
+                ),
                 SizedBox(height: 20),
                 FadeTransition(
                   opacity: _animationController!,
@@ -160,22 +162,13 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
                   ),
                 ),
                 SizedBox(height: 40),
-
-
-                //SOS BUTTON
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () async {
-                      // Your logic for what happens when the SOS is pressed
-                      if (await Vibration.hasVibrator() ?? false) {
-                        Vibration.vibrate(duration: 1000); // Vibrate for 500 milliseconds
-                      }
-                      print('SOS Button Pressed');
-                    },
+                    onTap: _onSOSPressed,
                     child: Container(
-                      width: 400, // Specify the width
-                      height: 400, // Specify the height
+                      width: 400,
+                      height: 400,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage('assets/images/sos.png'),

@@ -170,6 +170,7 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
                       width: 400,
                       height: 400,
                       decoration: BoxDecoration(
+                        shape: BoxShape.circle,
                         image: DecorationImage(
                           image: AssetImage('assets/images/sos.png'),
                           fit: BoxFit.cover,

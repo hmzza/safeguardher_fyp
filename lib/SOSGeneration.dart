@@ -162,23 +162,21 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
                   ),
                 ),
                 SizedBox(height: 40),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: _onSOSPressed,
-                    child: Container(
-                      width: 400,
-                      height: 400,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/sos.png'),
-                          fit: BoxFit.cover,
-                        ),
+                ClipOval(
+                  child: Material(
+                    color: Colors.transparent, // Set the color to transparent
+                    child: InkWell(
+                      splashColor: Colors.red.withOpacity(0.3), // Splash color over the image
+                      onTap: _onSOSPressed, // Trigger SOS function when image is tapped
+                      child: Ink.image(
+                        image: AssetImage('assets/images/sos.png'),
+                        fit: BoxFit.cover,
+                        width: 400,
+                        height: 400,
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -27,6 +27,7 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
           ],
           activeColor: Colors.pink,
+          backgroundColor: Colors.black, // Set the background color to black
         ),
         tabBuilder: (context, index){
           switch(index){

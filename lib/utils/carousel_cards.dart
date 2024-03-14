@@ -16,7 +16,7 @@ class CarouselCards extends StatelessWidget {
     return CarouselSlider(
       options: CarouselOptions(
         autoPlay: true,
-        autoPlayInterval: Duration(seconds: 5),
+        autoPlayInterval: Duration(seconds: 3),
         enlargeCenterPage: true,
         viewportFraction: 0.8, // Adjust viewport fraction to less than 1
         aspectRatio: 1.5,

@@ -40,7 +40,7 @@ class _callpageState extends State<callpage> {
   void playAudio() async {
     try {
       // Set the audio source
-      final duration = await player.setUrl("asset:assets/Audio/mavra.mp3");
+      // final duration = await player.setUrl("asset:assets/Audio/mavra.mp3");
 
       // Set audio output to earpiece when starting audio
       //await player.setAudioOutput(AudioOutput.earpiece);

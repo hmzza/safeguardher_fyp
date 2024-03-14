@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/SOSGeneration.dart';
+import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/threatDetection_mainPage.dart';
 import 'package:safeguardher/utils/carousel_cards.dart';
@@ -16,114 +17,111 @@ class _home_pageState extends State<home_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(titleText: 'Hi Saba!'),
+      appBar: CustomAppBar(titleText: 'SafeGuardHER'),
       body: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/backgroundlogin.png'),
+                image: AssetImage('assets/images/darkestmaroon.png'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          Column(
+          ListView(
             children: <Widget>[
-              Row(
-                children: [
-                  Flexible(
-                    flex: 2, // Adjust flex factor for carousel height
-                    child: CarouselCards(),
-                  ),
-                ],
+              SizedBox(height: 40),
+              CarouselCards(),
+              SizedBox(height: 40),
+              featureCard(
+                label: 'Threat Detection',
+                description: 'Monitor and alert in real-time', // Example description
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AudioRecorderUploader()),
+                ),
+                icon: Icons.security,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  featureItem(
-                    context: context,
-                    image: 'assets/images/threatdetection.png',
-                    label: 'Threat Detection',
-                    onTap: () =>
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  AudioRecorderUploader()),
-                        ),
-                    height: 210,
-                    width: 230
-                    // flex: 3, // Larger flex factor for "Threat Detection"
-                  ),
-                ],
+              featureCard(
+                label: 'Fake Call',
+                description: 'Simulate calls to avoid danger', // Example description
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => fakecallmainpage()),
+                ),
+                icon: Icons.phone_in_talk,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  featureItem(
-                    context: context,
-                    image: 'assets/images/fakecall.png',
-                    label: 'Fake Call',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => fakecallmainpage()),
-                    ),
-                    // flex: 3,
-                  ),
-                  featureItem(
-                    context: context,
-                    image: 'assets/images/sos.png',
-                    label: 'SOS Alert',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => SOSGeneration()),
-                    ),
-                  ),
-                ],
+              featureCard(
+                label: 'SOS Alert',
+                description: 'Send your location to contacts', // Example description
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => SOSGeneration()),
+                ),
+                icon: Icons.add_alert,
               ),
+
             ],
           ),
+
         ],
       ),
     );
   }
 
-  Widget featureItem({
-    required BuildContext context,
-    required String image,
+  Widget featureCard({
     required String label,
+    required String description,
     required VoidCallback onTap,
-    double height = 200,
-    double width = 200,
-    int flex = 1, // Default flex is 1
+    required IconData icon,
   }) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: height,
-        width: width,
-        child: Column(
+        margin: EdgeInsets.all(10.0),
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.pink.shade600, Color(0xFF7D1DCC)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 2),
+              blurRadius: 6.0,
+            ),
+          ],
+        ),
+        child: Row(
           children: <Widget>[
             Expanded(
-              flex: flex, // Use the flex factor to control size
-              child: Container(
-                width: double.infinity, // Container should fill the width
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(image),
-                    fit: BoxFit.cover,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontFamily: 'Open Sans', // Set the font family to Open Sans
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Colors.white,
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontFamily: 'Open Sans', // Set the font family to Open Sans
+                      fontSize: 16,
+                      color: Colors.white.withOpacity(0.9), // Slightly transparent white
+                    ),
+                  ),
+                ],
               ),
             ),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+            Icon(
+              icon,
+              color: Colors.white.withOpacity(0.9), // Reduced transparency of the icon
+              size: 40,
             ),
           ],
         ),

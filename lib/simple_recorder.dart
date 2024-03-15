@@ -1,53 +1,73 @@
-// import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:safeguardher/utils/custom_app_bar.dart';
-// import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'dart:io';
+/*
+ * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ *
+ * This file is part of Flutter-Sound.
+ *
+ * Flutter-Sound is free software: you can redistribute it and/or modify
+ * it under the terms of the Mozilla Public License version 2 (MPL2.0),
+ * as published by the Mozilla organization.
+ *
+ * Flutter-Sound is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MPL General Public License for more details.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-// import 'package:flutter/material.dart';
-// import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
 
+/*
+ * This is an example showing how to record to a Dart Stream.
+ * It writes all the recorded data from a Stream to a File, which is completely stupid:
+ * if an App wants to record something to a File, it must not use Streams.
+ *
+ * The real interest of recording to a Stream is for example to feed a
+ * Speech-to-Text engine, or for processing the Live data in Dart in real time.
+ *
+ */
+
+///
+typedef _Fn = void Function();
+
+/* This does not work. on Android we must have the Manifest.permission.CAPTURE_AUDIO_OUTPUT permission.
+ * But this permission is _is reserved for use by system components and is not available to third-party applications._
+ * Pleaser look to [this](https://developer.android.com/reference/android/media/MediaRecorder.AudioSource#VOICE_UPLINK)
+ *
+ * I think that the problem is because it is illegal to record a communication in many countries.
+ * Probably this stands also on iOS.
+ * Actually I am unable to record DOWNLINK on my Xiaomi Chinese phone.
+ *
+ */
+//const theSource = AudioSource.voiceUpLink;
+//const theSource = AudioSource.voiceDownlink;
+
+const theSource = AudioSource.microphone;
+
+/// Example app.
 class SimpleRecorder extends StatefulWidget {
   const SimpleRecorder({super.key});
 
   @override
   State<SimpleRecorder> createState() => _SimpleRecorderState();
 }
-typedef _Fn = void Function();
-const theSource = AudioSource.microphone;
-var uuid = const Uuid();
 
 class _SimpleRecorderState extends State<SimpleRecorder> {
-  Codec _codec = Codec.defaultCodec;
-  String _mPath = '${uuid.v4()}.wav';
+  Codec _codec = Codec.aacMP4;
+  String _mPath = 'tau_file.mp4';
   FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
-  dynamic directory = "";
-
-  String completePath = "";
-  String directoryPath = "";
-
-  String _completePath(String directory) {
-    _mPath = '${uuid.v4()}.wav';
-    var fileName = _mPath;
-    return "$directory$fileName";
-  }
-
-  String _directoryPath() {
-    var directoryPath = directory!.path;
-    return "$directoryPath/records/";
-  }
 
   @override
   void initState() {
@@ -63,48 +83,13 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
       });
     });
     super.initState();
-    print("Before super init");
-    _initDirectory();
-    print("After super init");
-  }
-
-  bool _isRecorderInitialised = false;
-
-  Future _createFile() async {
-    File(completePath).create(recursive: true).then((File file) async {
-      //write to file
-      Uint8List bytes = await file.readAsBytes();
-      file.writeAsBytes(bytes);
-      print("FILE CREATED AT : " + file.path);
-    });
-  }
-
-  void _createDirectory() async {
-    bool isDirectoryCreated = await Directory(directoryPath).exists();
-    if (!isDirectoryCreated) {
-      Directory(directoryPath).create().then((Directory directory) {
-        print("DIRECTORY CREATED AT : " + directory.path);
-      });
-    }
-  }
-
-  void _initPaths() {
-    directoryPath = _directoryPath();
-    completePath = _completePath(directoryPath);
-    _createDirectory();
-    _createFile();
-    _isRecorderInitialised = true;
-    setState(() {});
-  }
-
-  Future<void> _initDirectory() async {
-    directory = await getExternalStorageDirectory();
   }
 
   @override
   void dispose() {
     _mPlayer!.closePlayer();
     _mPlayer = null;
+
     _mRecorder!.closeRecorder();
     _mRecorder = null;
     super.dispose();
@@ -119,7 +104,8 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     }
     await _mRecorder!.openRecorder();
     if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
-      _codec = Codec.defaultCodec;
+      _codec = Codec.opusWebM;
+      _mPath = 'tau_file.webm';
       if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
         _mRecorderIsInited = true;
         return;
@@ -150,12 +136,9 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   // ----------------------  Here is the code for recording and playback -------
 
   void record() {
-    print("Before record path: $completePath");
-    _initPaths();
-    print("After record path: $completePath");
     _mRecorder!
         .startRecorder(
-      toFile: completePath,
+      toFile: _mPath,
       codec: _codec,
       audioSource: theSource,
     )
@@ -166,8 +149,6 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   void stopRecorder() async {
     await _mRecorder!.stopRecorder().then((value) {
-      // File f = File(value!);
-      // print("The created file : $f");
       setState(() {
         //var url = value;
         _mplaybackReady = true;
@@ -176,15 +157,14 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   }
 
   void play() {
-    print("PLayer path: $completePath");
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
         _mRecorder!.isStopped &&
         _mPlayer!.isStopped);
     _mPlayer!
         .startPlayer(
-        fromURI: completePath,
-        codec: Codec.defaultCodec,
+        fromURI: _mPath,
+        //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
         whenFinished: () {
           setState(() {});
         })
@@ -214,6 +194,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     }
     return _mPlayer!.isStopped ? play : stopPlayer;
   }
+
   @override
   Widget build(BuildContext context) {
     Widget makeBody() {
@@ -226,7 +207,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -239,7 +220,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
                 //disabledColor: Colors.grey,
                 child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mRecorder!.isRecording
@@ -248,14 +229,13 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
             ]),
           ),
           Container(
-            // Image.asset('assets/images/backgroundLoginPage.png')
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
             height: 80,
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -268,7 +248,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mPlayer!.isPlaying
@@ -279,21 +259,13 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         ],
       );
     }
+
     return Scaffold(
-        appBar: CustomAppBar(titleText:'Simple Recorder'),
-      body: Stack(
-        children: <Widget>[
-          // The background image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/backgroundLoginPage.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          // The actual body content
-          makeBody(),
-        ],
+      backgroundColor: Colors.blue,
+      appBar: AppBar(
+        title: const Text('Simple Recorder'),
       ),
+      body: makeBody(),
     );
   }
 }

@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           )
         ],
       ),
-      backgroundColor: Color(0xff463344), // Customize your AppBar theme here
+      backgroundColor: Color(0xff48032f), // Customize your AppBar theme here
       elevation: 0,
     );
   }

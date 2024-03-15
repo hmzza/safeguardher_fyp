@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:safeguardher/accountsettings.dart';
 import 'package:safeguardher/home_page.dart';
 
-import '../fakecall_mainpage.dart';
+// import '../fakecall_mainpage.dart';
 
 class BasePage extends StatefulWidget {
   // const BasePage({super.key, str});
@@ -45,7 +45,6 @@ class _BasePageState extends State<BasePage> {
 
 
     );
-    ;
   }
 }
 

@@ -95,7 +95,7 @@ class _HelpLinesState extends State<HelpLines> {
               icon: Icon(Icons.arrow_drop_down, color: Color(0xffbd0b79)),
               iconSize: 24,
               elevation: 16,
-              style: TextStyle(color: Color(0xffbd0b79), fontSize: 18),
+              style: TextStyle(color: Color(0xffbd0b79), fontSize: 18, fontWeight: FontWeight.w300),
               underline: Container(
                 height: 2,
                 color: Colors.white,
@@ -118,14 +118,14 @@ class _HelpLinesState extends State<HelpLines> {
                       helpline['name'] ?? '',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                     subtitle: Text(
                       helpline['number'] ?? '',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     ),
                     trailing: IconButton(

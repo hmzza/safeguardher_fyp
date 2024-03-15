@@ -16,83 +16,112 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(titleText:'Fake Call Simulator'),
-    body: Stack(
+      appBar: CustomAppBar(titleText: 'Fake Call Simulator'),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/backgroundlogin.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          ListView(
+            children: <Widget>[
+              SizedBox(height: 40),
+              SizedBox(height: 40),
+              featureCard(
+                label: 'Fake Call Now',
+                description: 'Generate fake call instantly',
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => fakeCallNow(
+                            value: '',
+                          )),
+                ),
+                icon: Icons.call,
+              ),
+              featureCard(
+                label: 'Schedule Fake Call',
+                description: 'Generate fake call for later use',
+                // Example description
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => fakecallmainpage()),
+                ),
+                icon: Icons.schedule_outlined,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
-    children: <Widget>[
-      Container(
+  Widget featureCard({
+    required String label,
+    required String description,
+    required VoidCallback onTap,
+    required IconData icon,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.all(10.0),
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/backgroundlogin.png"),
-            fit: BoxFit.cover,
+          gradient: LinearGradient(
+            colors: [Colors.pink.shade600, Color(0xFF7D1DCC)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 2),
+              blurRadius: 6.0,
+            ),
+          ],
+        ),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontFamily: 'Open Sans',
+                      // Set the font family to Open Sans
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontFamily: 'Open Sans',
+                      // Set the font family to Open Sans
+                      fontSize: 16,
+                      color: Colors.white
+                          .withOpacity(0.9), // Slightly transparent white
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              icon,
+              color: Colors.white.withOpacity(0.9),
+              // Reduced transparency of the icon
+              size: 40,
+            ),
+          ],
         ),
       ),
-      Container(
-       //color: Colors.grey,
-        width: 380,
-        height: 250,
-        margin: EdgeInsets.only(top: 80,left: 60,right: 60),
-          child:ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) =>
-                  new fakecall())
-              );
-            },
-            child: Container(
-              //color: Colors.white,
-                height: 50,
-                width: 200,
-                margin: EdgeInsets.only(left: 10),
-                child: Center(
-                    child: Text('Call Now',style: TextStyle(fontSize: 25, color: Colors.black),)
-                )
-            ),
-            style: ElevatedButton.styleFrom(
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(10),
-              backgroundColor: Colors.blue, // <-- Button color
-              //foregroundColor: Colors.white, // <-- Splash color
-            ),
-          ),
-
-      ),
-      Container(
-        //color: Colors.grey,
-        width: 380,
-        height: 250,
-        margin: EdgeInsets.only(top:400,left: 60,right: 60),
-        child:ElevatedButton(
-          onPressed: () {
-            Navigator.push(context, new MaterialPageRoute(
-                builder: (context) =>
-                new fakeCallNow(value: '',))
-            );
-
-          },
-          child: Container(
-              //color: Colors.white,
-              height: 50,
-              width: 200,
-              margin: EdgeInsets.only(left: 10),
-              child: Center(
-                  child: Text('Schedule Later',style: TextStyle(fontSize: 25, color: Colors.black),)
-              )
-          ),
-          style: ElevatedButton.styleFrom(
-            shape: CircleBorder(),
-
-            padding: EdgeInsets.all(10),
-            backgroundColor: Colors.blue, // <-- Button color
-            //foregroundColor: Colors.white, // <-- Splash color
-          ),
-        ),
-
-      ),
-
-      ],
-    ),
     );
   }
 }

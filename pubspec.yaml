@@ -41,7 +41,7 @@ dependencies:
   just_audio: ^0.9.36
   flutter_sound: ^9.2.13
   permission_handler: ^11.0.1
-  audio_session: ^0.1.16
+  audio_session: ^0.1.18
   path_provider: ^2.1.1
   uuid: ^3.0.7
   tflite_flutter: ^0.10.4

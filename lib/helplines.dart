@@ -84,7 +84,7 @@ class _HelpLinesState extends State<HelpLines> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/darkestmaroon.png'),
+            image: AssetImage('assets/images/darkbgwithfade.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -92,10 +92,10 @@ class _HelpLinesState extends State<HelpLines> {
           children: [
             DropdownButton<String>(
               value: selectedCity,
-              icon: Icon(Icons.arrow_drop_down, color: Colors.red),
+              icon: Icon(Icons.arrow_drop_down, color: Color(0xffbd0b79)),
               iconSize: 24,
               elevation: 16,
-              style: TextStyle(color: Color(0xFFFF2929), fontSize: 20),
+              style: TextStyle(color: Color(0xffbd0b79), fontSize: 18),
               underline: Container(
                 height: 2,
                 color: Colors.white,
@@ -118,7 +118,7 @@ class _HelpLinesState extends State<HelpLines> {
                       helpline['name'] ?? '',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 22,
+                        fontSize: 20,
                       ),
                     ),
                     subtitle: Text(
@@ -129,7 +129,7 @@ class _HelpLinesState extends State<HelpLines> {
                       ),
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.phone, color: Colors.white),
+                      icon: Icon(Icons.phone, color: Color(0xffbd0b79)),
                       onPressed: () => _makePhoneCall(helpline['number'] ?? ''),
                     ),
                   );

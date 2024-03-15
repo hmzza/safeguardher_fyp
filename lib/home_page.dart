@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/SOSGeneration.dart';
-import 'package:safeguardher/fakecall.dart';
+// import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/threatDetection_mainPage.dart';
 import 'package:safeguardher/utils/carousel_cards.dart';
@@ -23,7 +23,7 @@ class _home_pageState extends State<home_page> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/darkestmaroon.png'),
+                image: AssetImage('assets/images/darkbgwithfade.png'),
                 fit: BoxFit.cover,
               ),
             ),

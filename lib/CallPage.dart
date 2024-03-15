@@ -6,10 +6,10 @@ import 'package:safeguardher/fakecall.dart';
 
 class callpage extends StatefulWidget {
 
-  var name;
-  var areaCode;
-  var prefix;
-  var lastFour;
+  final name;
+  final areaCode;
+  final prefix;
+  final lastFour;
 
    callpage({Key? key, required this.lastFour, required this.areaCode, required this.prefix, required this.name}) : super(key: key);
 

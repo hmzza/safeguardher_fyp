@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/fakecall.dart';
+import 'package:safeguardher/schedule_fakecall.dart';
 // import 'package:safeguardher/schedule_fakecall.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 
@@ -84,7 +85,7 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
               context,
               new MaterialPageRoute(
                   builder: (context) =>
-                      new fakecall()),
+                      new ScheduleFakeCall()),
             );
           },
           child: Container(

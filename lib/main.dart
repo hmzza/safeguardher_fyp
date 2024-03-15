@@ -27,7 +27,7 @@ void main() {
       'fakecall': (context)=>fakecall(),
       'home_page': (context)=>home_page(),
       'main_screen': (context)=>MainScreen(),
-      'account_settings': (context)=>accountsettings(),
+      'account_settings': (context)=>AccountSettings(),
       'fakecallmainpage': (context)=>fakecallmainpage(),
       'aboutUs': (context)=>AboutUs(),
       'helplines': (context)=>HelpLines(),

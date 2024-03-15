@@ -26,7 +26,7 @@ class _BasePageState extends State<BasePage> {
 
   final pages = [
     const home_page(),
-    const accountsettings(),
+    const AccountSettings(),
   ];
 
 

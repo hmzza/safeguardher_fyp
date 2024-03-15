@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -119,6 +122,7 @@ class _HelpLinesState extends State<HelpLines> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     subtitle: Text(
@@ -142,3 +146,5 @@ class _HelpLinesState extends State<HelpLines> {
     );
   }
 }
+
+

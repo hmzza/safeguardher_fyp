@@ -55,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
               case 3:
               return CupertinoTabView(
                 builder: (context){
-                  return CupertinoPageScaffold(child: accountsettings());
+                  return CupertinoPageScaffold(child: AccountSettings());
                 },
               );
           }

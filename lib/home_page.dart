@@ -112,7 +112,7 @@ class _home_pageState extends State<home_page> {
                     style: TextStyle(
                       fontFamily: 'Open Sans', // Set the font family to Open Sans
                       fontSize: 16,
-                      color: Colors.white.withOpacity(0.9), // Slightly transparent white
+                      color: Colors.white.withOpacity(0.7), // Slightly transparent white
                     ),
                   ),
                 ],

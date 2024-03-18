@@ -206,6 +206,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_alarm_clock:
+    dependency: "direct main"
+    description:
+      name: flutter_alarm_clock
+      sha256: "670b047839d2e1e85106798f7ce610723ea2e022073ef82dd16c4def3970f1e4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   flutter_background_service:
     dependency: "direct main"
     description:
@@ -304,6 +312,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      sha256: "275ff26905134bcb59417cf60ad979136f1f8257f2f449914b2c3e05bbb4cd6f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.7.0"
   geolocator:
     dependency: "direct main"
     description:
@@ -348,10 +364,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_windows
-      sha256: a92fae29779d5c6dc60e8411302f5221ade464968fe80a36d330e80a71f087af
+      sha256: "53da08937d07c24b0d9952eb57a3b474e29aae2abf9dd717f7e1230995f13f0e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.2"
+    version: "0.2.3"
   google_fonts:
     dependency: "direct main"
     description:

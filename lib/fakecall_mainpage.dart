@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/fakecall.dart';
+import 'package:safeguardher/schedule_fakecall.dart';
 // import 'package:safeguardher/schedule_fakecall.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 
@@ -16,112 +17,186 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(titleText: 'Fake Call Simulator'),
-      body: Stack(
-        children: <Widget>[
-          Container(
+        appBar: CustomAppBar(titleText:'Fake Call Simulator'),
+    body: Stack(
+
+    children: <Widget>[
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/backgroundlogin.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+
+
+      //Call Now
+
+      Positioned(
+        left: 100,
+        top: 100,
+        child: GestureDetector(
+          // or InkWell for ripple effect
+          onTap: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) =>
+                      new fakecall()),
+            );
+          },
+          child: Container(
+            alignment: Alignment.center,
+            height: 200,
+            width: 200,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/backgroundlogin.png"),
+                image: AssetImage("assets/images/1.png"),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          ListView(
-            children: <Widget>[
-              SizedBox(height: 40),
-              SizedBox(height: 40),
-              featureCard(
-                label: 'Fake Call Now',
-                description: 'Generate fake call instantly',
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => fakeCallNow(
-                        value: '',
-                      )),
-                ),
-                icon: Icons.call,
-              ),
-              featureCard(
-                label: 'Schedule Fake Call',
-                description: 'Generate fake call for later use',
-                // Example description
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => fakecallmainpage()),
-                ),
-                icon: Icons.schedule_outlined,
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
-    );
-  }
+      Positioned(
+          left: 160,
+          top: 310,
+          child: Text(
+            'Call Now',
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          )
+      ),
 
-  Widget featureCard({
-    required String label,
-    required String description,
-    required VoidCallback onTap,
-    required IconData icon,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.all(10.0),
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.pink.shade600, Color(0xFF7D1DCC)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-        ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontFamily: 'Open Sans',
-                      // Set the font family to Open Sans
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontFamily: 'Open Sans',
-                      // Set the font family to Open Sans
-                      fontSize: 16,
-                      color: Colors.white
-                          .withOpacity(0.9), // Slightly transparent white
-                    ),
-                  ),
-                ],
+
+
+
+      // schedule late
+      Positioned(
+        left: 100,
+        top: 400,
+        child: GestureDetector(
+          // or InkWell for ripple effect
+          onTap: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) =>
+                      new ScheduleFakeCall()),
+            );
+          },
+          child: Container(
+            alignment: Alignment.center,
+            height: 200,
+            width: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/2.png"),
+                fit: BoxFit.cover,
               ),
             ),
-            Icon(
-              icon,
-              color: Colors.white.withOpacity(0.9),
-              // Reduced transparency of the icon
-              size: 40,
-            ),
-          ],
+          ),
         ),
       ),
+      Positioned(
+          left: 140,
+          top: 600,
+          child: Text(
+            'Schedule Call',
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          )
+      ),
+
+
+
+      //
+      //
+      //
+      // Container(
+      //  //color: Colors.grey,
+      //   width: 300,
+      //   height: 120,
+      //   margin: EdgeInsets.only(top: 280,left: 60,right: 60),
+      //     child:ElevatedButton(
+      //       onPressed: () {
+      //         Navigator.push(context, new MaterialPageRoute(
+      //             builder: (context) =>
+      //             new fakeCallNow(value: '',))
+      //         );
+      //       },
+      //       child: Container(
+      //         //color: Colors.white,
+      //           height: 50,
+      //           width: 200,
+      //           margin: EdgeInsets.only(left: 10),
+      //           child: Center(
+      //               child: Text('Call Now',style: TextStyle(fontSize: 20, color: Colors.black),)
+      //           )
+      //       ),
+      //       style: ElevatedButton.styleFrom(
+      //         shape: const RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.all(Radius.circular(50)),
+      //         ),
+      //         padding: EdgeInsets.all(10),
+      //         backgroundColor: Colors.blue, // <-- Button color
+      //         //foregroundColor: Colors.white, // <-- Splash color
+      //       ),
+      //     ),
+      //
+      // ),
+      //
+      //
+      //
+      //
+      //
+      //
+      // //Schedule Later
+      // Container(
+      //   //color: Colors.grey,
+      //   width: 300,
+      //   height: 120,
+      //   margin: EdgeInsets.only(top:500,left: 60,right: 60),
+      //   child:ElevatedButton(
+      //     onPressed: () {
+      //       Navigator.push(context, new MaterialPageRoute(
+      //           builder: (context) =>
+      //           new fakeCallNow(value: '',))
+      //       );
+      //     },
+      //     child: Container(
+      //         //color: Colors.white,
+      //         height: 50,
+      //         width: 200,
+      //         margin: EdgeInsets.only(left: 10),
+      //         child: Center(
+      //             child: Text('Schedule Later',style: TextStyle(fontSize: 20, color: Colors.black),)
+      //         )
+      //     ),
+      //     style: ElevatedButton.styleFrom(
+      //       shape: const RoundedRectangleBorder(
+      //         borderRadius: BorderRadius.all(Radius.circular(50)),
+      //       ),
+      //
+      //       padding: EdgeInsets.all(10),
+      //       backgroundColor: Colors.blue, // <-- Button color
+      //       //foregroundColor: Colors.white, // <-- Splash color
+      //     ),
+      //   ),
+      //
+      // ),
+      //
+
+
+
+
+      ],
+    ),
     );
   }
 }

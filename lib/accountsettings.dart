@@ -9,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:safeguardher/utils/imageprovider.dart';
 
+import 'guide.dart';
+
 class AccountSettings extends StatefulWidget {
   const AccountSettings({Key? key}) : super(key: key);
 
@@ -82,7 +84,7 @@ class _AccountSettingsState extends State<AccountSettings> {
               context,
               title: 'Guide (User Manual)',
               icon: Icons.menu_book,
-              destination: Container(), // Placeholder for user manual page
+              destination: Guide(), // Placeholder for user manual page
             ),
             _settingOption(
               context,

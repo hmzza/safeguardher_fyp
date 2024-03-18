@@ -7,7 +7,9 @@ import 'package:safeguardher/fakecall.dart';
 
 class fakeCallNow extends StatefulWidget {
   final String value;
-  const fakeCallNow({Key? key, required this.value}) : super(key: key);
+  final String? selectedGender;
+  final String? selectedLang;
+  const fakeCallNow({Key? key, required this.value, required this.selectedGender, required this.selectedLang}) : super(key: key);
 
   @override
   State<fakeCallNow> createState() => _fakeCallNowState();
@@ -15,14 +17,17 @@ class fakeCallNow extends StatefulWidget {
 
 class _fakeCallNowState extends State<fakeCallNow>
 {
+  late String selectedLang = "${widget.selectedLang}";
   late String Name = "${widget.value}";
   late AudioPlayer audioPlayer;
   String areaCode = "+92";
   String prefix = "30";
-  var lastFour = Random().nextInt(10000000)+9999999;
+  var LastFour = Random().nextInt(10000000)+9999999;
 
   var player;
   bool ringing = false;
+
+
 
 
 
@@ -42,7 +47,7 @@ class _fakeCallNowState extends State<fakeCallNow>
   void playRingtone() async {
     try {
       final duration = await player.setUrl(
-          "asset:assets/Audio/don.mp3");
+          "asset:assets/Audio/RINGTONE.mp3");
       await player.play();
       ringing = true;
     } catch (e)
@@ -67,7 +72,7 @@ class _fakeCallNowState extends State<fakeCallNow>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent,
+      backgroundColor: Colors.grey.shade800,
       body: Stack(
         children: [
           Column(
@@ -79,7 +84,7 @@ class _fakeCallNowState extends State<fakeCallNow>
                 style: TextStyle(fontSize: 50),
               ),
               Text(
-                "$areaCode-$prefix$lastFour",
+                "$areaCode-$prefix$LastFour",
                 style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
               SizedBox(
@@ -102,7 +107,7 @@ class _fakeCallNowState extends State<fakeCallNow>
                   ),
                 ],
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -132,7 +137,7 @@ class _fakeCallNowState extends State<fakeCallNow>
                           onPressed: () {
                             answerCall();
                             Navigator.push(context, new MaterialPageRoute(
-                                builder: (context) =>new callpage(lastFour: lastFour, areaCode: areaCode, prefix: prefix, name: Name ))
+                                builder: (context) =>new callpage(lastFour: LastFour, areaCode: areaCode, prefix: prefix, name: Name, Lang: selectedLang, ))
                             );
                           },
                         ),

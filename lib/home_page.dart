@@ -79,7 +79,7 @@ class _home_pageState extends State<home_page> {
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFF54184), Color(0xEDAA55F1)],
+            colors: [Color(0xFFB44E85), Color(0xFFB44E85)],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),

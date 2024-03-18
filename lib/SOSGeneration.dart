@@ -121,23 +121,34 @@ class _SOSGenerationState extends State<SOSGeneration>
       return;
     }
 
-    final String googleMapsUrl =
-        "https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}";
-    final String message =
-        "SOS! I need help! Here is my current location: $googleMapsUrl";
+    String message = "SOS! I need help! Here is my current location: https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}";
 
-    // Assuming you have a recipient's phone number, for example:
-    final String phoneNumber =
-        '1234567890'; // Replace with the actual phone number
-    final String whatsappUrl =
-        "whatsapp://send?phone=$phoneNumber&text=${Uri.encodeFull(message)}";
+    // Retrieve custom contacts from shared preferences or another source
+    final List<String> whatsappNumbers = contactNumbers; // replace with your contact numbers list
 
-    if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
-      await launchUrl(Uri.parse(whatsappUrl));
-    } else {
-      _showSnackbar(context, "WhatsApp is not installed on the device.");
+    for (var number in whatsappNumbers) {
+      // Ensure the phone number is in international format and url encoded
+      final Uri whatsappUrl = Uri(
+        scheme: 'https',
+        host: 'api.whatsapp.com',
+        path: '/send',
+        queryParameters: {
+          'phone': number, // Include country code
+          'text': message,
+        },
+      );
+
+      // Open the WhatsApp URL
+      if (await canLaunchUrl(whatsappUrl)) {
+        await launchUrl(whatsappUrl);
+        // Break the loop after opening the URL for the first number
+        break;
+      } else {
+        _showSnackbar(context, "WhatsApp is not installed or not available for the number $number.");
+      }
     }
   }
+
 
   void _onSOSPressed() async {
     setState(() {
@@ -171,6 +182,13 @@ class _SOSGenerationState extends State<SOSGeneration>
                 fit: BoxFit.cover,
               ),
             ),
+          ),
+          ElevatedButton(
+            onPressed: sendSOSWhatsApp,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green, // WhatsApp color
+            ),
+            child: Text('Send SOS through WhatsApp'),
           ),
           Center(
             child: Column(
@@ -216,13 +234,7 @@ class _SOSGenerationState extends State<SOSGeneration>
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: sendSOSWhatsApp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // WhatsApp color
-                  ),
-                  child: Text('Send SOS through WhatsApp'),
-                ),
+
               ],
             ),
           ),

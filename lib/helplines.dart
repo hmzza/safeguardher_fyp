@@ -18,11 +18,33 @@ class _HelpLinesState extends State<HelpLines> {
     'Islamabad': [
       {'name': 'Edhi Ambulance', 'number': '051-115'},
       {'name': 'Civil Hospital', 'number': '555-0311'},
+      {'name': 'Police Emergency', 'number': '051-15'},
+      {'name': 'Rescue Service', 'number': '051-1122'},
+      {'name': 'Aurat Foundation', 'number': '051-26089568'},
+      {'name': 'Madadgar', 'number': '111-9111-922'},
+      {'name': 'ROZAN', 'number': '051-2890505-7'},
+      {'name': 'Fire Brigade', 'number': '16'},
       // Add more Islamabad helpline data here...
+    ],
+    'Karachi': [
+      {'name': 'Edhi Ambulance', 'number': '021-115'},
+      {'name': 'Aga Khan Hospital', 'number': '021-3493 0051'},
+      // Add more Karachi helpline data here...
+    ],
+    'Lahore': [
+      // Add Lahore helpline data here...
+      {'name': 'Edhi Ambulance', 'number': '042-115'},
+      {'name': 'Jinnah Hospital', 'number': '042-35928231'},
+      // Add more Lahore helpline data here...
+    ],
+    'Peshawar': [
+      // Add Peshawar helpline data here...
+      {'name': 'Edhi Ambulance', 'number': '091-115'},
+      {'name': 'Khyber Teaching Hospital', 'number': '091-9217140-47'},
+      // Add more Peshawar helpline data here...
     ],
     // Add more cities and their helplines here...
   };
-
   @override
   void initState() {
     super.initState();
@@ -61,8 +83,9 @@ class _HelpLinesState extends State<HelpLines> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Helplines', style: TextStyle(color: Color(0xFFF54184))),
+        centerTitle: true,
+        backgroundColor: Color(0xff48032f),
+        title: Text('Helplines', style: TextStyle(color: Colors.white)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search, color: Colors.white),
@@ -92,7 +115,7 @@ class _HelpLinesState extends State<HelpLines> {
               color: Colors.black.withOpacity(0.5), // Semi-transparent overlay for better visibility
               child: DropdownButton<String>(
                 value: selectedCity,
-                dropdownColor: Colors.black,
+                dropdownColor: Color(0xFF363636),
                 icon: Icon(Icons.arrow_downward, color: Color(0xFFF54184)),
                 elevation: 16,
                 style: TextStyle(color: Colors.white),

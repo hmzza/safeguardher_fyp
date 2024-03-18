@@ -7,13 +7,15 @@ import 'package:telephony/telephony.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:vibration/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SOSGeneration extends StatefulWidget {
   @override
   _SOSGenerationState createState() => _SOSGenerationState();
 }
 
-class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProviderStateMixin {
+class _SOSGenerationState extends State<SOSGeneration>
+    with SingleTickerProviderStateMixin {
   final Telephony telephony = Telephony.instance;
   List<String> contactNumbers = [];
   AnimationController? _animationController;
@@ -23,7 +25,8 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
   void initState() {
     super.initState();
     _loadSavedContactNumbers();
-    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
   }
 
@@ -35,9 +38,11 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
 
   void _loadSavedContactNumbers() async {
     final prefs = await SharedPreferences.getInstance();
-    final List<String>? savedContactIds = prefs.getStringList('selectedContacts');
+    final List<String>? savedContactIds =
+        prefs.getStringList('selectedContacts');
     if (savedContactIds != null && savedContactIds.isNotEmpty) {
-      final Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
+      final Iterable<Contact> contacts =
+          await ContactsService.getContacts(withThumbnails: false);
       final List<String> numbers = contacts
           .where((contact) => savedContactIds.contains(contact.identifier))
           .expand((contact) => contact.phones!.map((phone) => phone.value!))
@@ -53,7 +58,8 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
     if (!serviceEnabled) {
       return null;
     }
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 
   Future<PermissionStatus> _requestLocationPermission() async {
@@ -61,11 +67,13 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
   }
 
   void _showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void sendSOSAlert() async {
-    final PermissionStatus locationPermissionStatus = await _requestLocationPermission();
+    final PermissionStatus locationPermissionStatus =
+        await _requestLocationPermission();
     if (locationPermissionStatus != PermissionStatus.granted) {
       _showSnackbar(context, "Location permission is required for SOS.");
       return;
@@ -79,12 +87,15 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
 
     final bool? smsPermissionGranted = await telephony.requestSmsPermissions;
     if (!smsPermissionGranted!) {
-      _showSnackbar(context, "SMS permission is required to send SOS messages.");
+      _showSnackbar(
+          context, "SMS permission is required to send SOS messages.");
       return;
     }
 
-    final String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}";
-    final String message = "SOS! I need help! Here is my current location: $googleMapsUrl";
+    final String googleMapsUrl =
+        "https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}";
+    final String message =
+        "SOS! I need help! Here is my current location: $googleMapsUrl";
 
     for (String number in contactNumbers) {
       await telephony.sendSms(
@@ -100,6 +111,31 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
           });
         },
       );
+    }
+  }
+
+  void sendSOSWhatsApp() async {
+    final Position? position = await _determinePosition();
+    if (position == null) {
+      _showSnackbar(context, "Failed to get the location.");
+      return;
+    }
+
+    final String googleMapsUrl =
+        "https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}";
+    final String message =
+        "SOS! I need help! Here is my current location: $googleMapsUrl";
+
+    // Assuming you have a recipient's phone number, for example:
+    final String phoneNumber =
+        '1234567890'; // Replace with the actual phone number
+    final String whatsappUrl =
+        "whatsapp://send?phone=$phoneNumber&text=${Uri.encodeFull(message)}";
+
+    if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+      await launchUrl(Uri.parse(whatsappUrl));
+    } else {
+      _showSnackbar(context, "WhatsApp is not installed on the device.");
     }
   }
 
@@ -124,7 +160,8 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(titleText: 'SOS'), // Make sure this matches your custom app bar
+      appBar: CustomAppBar(titleText: 'SOS'),
+      // Make sure this matches your custom app bar
       body: Stack(
         children: <Widget>[
           Container(
@@ -166,8 +203,10 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
                   child: Material(
                     color: Colors.transparent, // Set the color to transparent
                     child: InkWell(
-                      splashColor: Colors.red.withOpacity(0.3), // Splash color over the image
-                      onTap: _onSOSPressed, // Trigger SOS function when image is tapped
+                      splashColor: Colors.red.withOpacity(0.3),
+                      // Splash color over the image
+                      onTap: _onSOSPressed,
+                      // Trigger SOS function when image is tapped
                       child: Ink.image(
                         image: AssetImage('assets/images/sos.png'),
                         fit: BoxFit.cover,
@@ -176,6 +215,13 @@ class _SOSGenerationState extends State<SOSGeneration> with SingleTickerProvider
                       ),
                     ),
                   ),
+                ),
+                ElevatedButton(
+                  onPressed: sendSOSWhatsApp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green, // WhatsApp color
+                  ),
+                  child: Text('Send SOS through WhatsApp'),
                 ),
               ],
             ),

@@ -37,8 +37,8 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
                       builder: (context) => fakeCallNow(
-                            value: '',
-                          )),
+                        value: '',
+                      )),
                 ),
                 icon: Icons.call,
               ),

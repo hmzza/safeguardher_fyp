@@ -79,7 +79,7 @@ class _home_pageState extends State<home_page> {
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.pink.shade600, Color(0xFF7D1DCC)],
+            colors: [ Color(0xFFB44E85), Color(0xFFB44E85)],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
@@ -112,7 +112,7 @@ class _home_pageState extends State<home_page> {
                     style: TextStyle(
                       fontFamily: 'Open Sans', // Set the font family to Open Sans
                       fontSize: 16,
-                      color: Colors.white.withOpacity(0.9), // Slightly transparent white
+                      color: Colors.white.withOpacity(0.7), // Slightly transparent white
                     ),
                   ),
                 ],

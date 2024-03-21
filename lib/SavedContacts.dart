@@ -20,11 +20,14 @@ class _SavedContactsState extends State<SavedContacts> {
 
   void _loadSavedContacts() async {
     final prefs = await SharedPreferences.getInstance();
-    final List<String>? savedContactIds = prefs.getStringList('selectedContacts');
+    final List<String>? savedContactIds =
+    prefs.getStringList('selectedContacts');
 
     if (savedContactIds != null && savedContactIds.isNotEmpty) {
       final Iterable<Contact> contacts = await ContactsService.getContacts();
-      final List<Contact> filteredContacts = contacts.where((contact) => savedContactIds.contains(contact.identifier)).toList();
+      final List<Contact> filteredContacts = contacts
+          .where((contact) => savedContactIds.contains(contact.identifier))
+          .toList();
 
       setState(() {
         _savedContacts = filteredContacts;
@@ -33,7 +36,8 @@ class _SavedContactsState extends State<SavedContacts> {
   }
 
   void _navigateAndRefresh() async {
-    await Navigator.of(context).push(MaterialPageRoute(builder: (context) => CustomContacts()));
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CustomContacts()));
     _loadSavedContacts();
   }
 
@@ -42,12 +46,15 @@ class _SavedContactsState extends State<SavedContacts> {
     List<String>? savedContactIds = prefs.getStringList('selectedContacts');
     if (savedContactIds != null) {
       setState(() {
-        _savedContacts.removeWhere((contact) => contact.identifier == contactId); // Remove from UI immediately
+        _savedContacts.removeWhere((contact) =>
+        contact.identifier == contactId); // Remove from UI immediately
         savedContactIds.remove(contactId); // Remove from saved list
       });
       await prefs.setStringList('selectedContacts', savedContactIds);
     }
   }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,36 +62,58 @@ class _SavedContactsState extends State<SavedContacts> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/lightPinkBG.png"), // Specify your image path
+            image: AssetImage("assets/images/darkbgwithfade.png"),
             fit: BoxFit.cover,
           ),
         ),
-        child: _savedContacts.isEmpty
-            ? Center(child: CircularProgressIndicator()) // Show loading indicator while loading contacts
-            : _savedContacts.isEmpty
-            ? Center(child: Text('No saved contacts.'))
-            : ListView.builder(
-          itemCount: _savedContacts.length,
-          itemBuilder: (context, index) {
-            final contact = _savedContacts[index];
-            return ListTile(
-              leading: (contact.avatar != null && contact.avatar!.isNotEmpty)
-                  ? CircleAvatar(backgroundImage: MemoryImage(contact.avatar!))
-                  : CircleAvatar(child: Text(contact.initials())),
-              title: Text(contact.displayName ?? 'No Name'),
-              subtitle: Text(
-                contact.phones!.isNotEmpty ? contact.phones!.first.value! : 'No number available',
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: _savedContacts.isEmpty
+                  ? Center(
+                child: CircularProgressIndicator(),
+              )
+                  : ListView.builder(
+                itemCount: _savedContacts.length,
+                itemBuilder: (context, index) {
+                  final contact = _savedContacts[index];
+                  return ListTile(
+                    leading: (contact.avatar != null && contact.avatar!.isNotEmpty)
+                        ? CircleAvatar(backgroundImage: MemoryImage(contact.avatar!))
+                        : CircleAvatar(child: Text(contact.initials())),
+                    title: Text(
+                      contact.displayName ?? 'No Name',
+                      style: TextStyle(color: Colors.white), // Main text color
+                    ),
+                    subtitle: Text(
+                      contact.phones!.isNotEmpty ? contact.phones!.first.value! : 'No number available',
+                      style: TextStyle(color: Color(0xFFF54184)), // Subtext color
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete, color: Color(0xFFF54184)),
+                      onPressed: () => _deleteContact(contact.identifier!),
+                    ),
+                  );
+                },
               ),
-              trailing: IconButton(
-                icon: Icon(Icons.delete, color: Colors.red),
-                onPressed: () => _deleteContact(contact.identifier!),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+              child: Text(
+                'These contacts will be\nnotified when an SOS is sent.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xA8F54184), // You can change this to the color that fits your design
+                  fontSize: 16, // Adjust the size as needed
+                  fontWeight: FontWeight.w300, // Adjust the weight as needed
+                ),
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff463344),
+        backgroundColor: Color(0xff48032f),
         onPressed: _navigateAndRefresh,
         child: Icon(Icons.add),
         tooltip: 'Edit Contacts',
@@ -95,4 +124,5 @@ class _SavedContactsState extends State<SavedContacts> {
       ),
     );
   }
+
 }

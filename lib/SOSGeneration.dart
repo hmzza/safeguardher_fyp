@@ -39,10 +39,10 @@ class _SOSGenerationState extends State<SOSGeneration>
   void _loadSavedContactNumbers() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String>? savedContactIds =
-        prefs.getStringList('selectedContacts');
+    prefs.getStringList('selectedContacts');
     if (savedContactIds != null && savedContactIds.isNotEmpty) {
       final Iterable<Contact> contacts =
-          await ContactsService.getContacts(withThumbnails: false);
+      await ContactsService.getContacts(withThumbnails: false);
       final List<String> numbers = contacts
           .where((contact) => savedContactIds.contains(contact.identifier))
           .expand((contact) => contact.phones!.map((phone) => phone.value!))
@@ -73,7 +73,7 @@ class _SOSGenerationState extends State<SOSGeneration>
 
   void sendSOSAlert() async {
     final PermissionStatus locationPermissionStatus =
-        await _requestLocationPermission();
+    await _requestLocationPermission();
     if (locationPermissionStatus != PermissionStatus.granted) {
       _showSnackbar(context, "Location permission is required for SOS.");
       return;
@@ -156,7 +156,7 @@ class _SOSGenerationState extends State<SOSGeneration>
     });
 
     if (await Vibration.hasVibrator() ?? false) {
-      Vibration.vibrate(duration: 500); // Vibrate for 500 milliseconds
+      Vibration.vibrate(duration: 1500); // Vibrate for 500 milliseconds
     }
 
     sendSOSAlert();
@@ -183,13 +183,7 @@ class _SOSGenerationState extends State<SOSGeneration>
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: sendSOSWhatsApp,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green, // WhatsApp color
-            ),
-            child: Text('Send SOS through WhatsApp'),
-          ),
+
           Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -233,6 +227,13 @@ class _SOSGenerationState extends State<SOSGeneration>
                       ),
                     ),
                   ),
+                ),
+                ElevatedButton(
+                  onPressed: sendSOSWhatsApp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0x910B9801), // WhatsApp color
+                  ),
+                  child: Text('Send SOS through WhatsApp'),
                 ),
 
               ],

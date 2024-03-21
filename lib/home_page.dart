@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/SOSGeneration.dart';
+import 'package:safeguardher/accountsettings.dart';
 // import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/threatDetection_mainPage.dart';
 import 'package:safeguardher/utils/carousel_cards.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
+
+import 'helplines.dart';
 
 class home_page extends StatefulWidget {
   const home_page({Key? key}) : super(key: key);
@@ -17,7 +20,21 @@ class _home_pageState extends State<home_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(titleText: 'SafeGuardHER'),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color(0xff48032f),
+        title: Text('Helplines', style: TextStyle(color: Colors.white)),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AccountSettings(), // Replace with your settings page class
+              ));
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           Container(

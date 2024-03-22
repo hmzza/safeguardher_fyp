@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/changepassword.dart';
+import 'package:safeguardher/home_page.dart';
 // import 'package:safeguardher/fakecall.dart';
 // import 'package:safeguardher/forgetpassword.dart';
 // import 'package:safeguardher/home_page.dart';
@@ -32,7 +33,11 @@ class _myloginState extends State<mylogin> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+            (Route<dynamic> route) => false,
+      );
     } on FirebaseAuthException catch (e) {
       String message = "An error occurred";
       if (e.code == 'user-not-found') {
@@ -44,7 +49,7 @@ class _myloginState extends State<mylogin> {
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xA0FF0000),
         textColor: Colors.white,
         fontSize: 16.0,
       );
@@ -102,7 +107,7 @@ class _myloginState extends State<mylogin> {
                 SizedBox(height: 40),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.redAccent,
+                    foregroundColor: Colors.white, backgroundColor: Color(0xFFF54184),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                     ),
@@ -121,6 +126,12 @@ class _myloginState extends State<mylogin> {
                   child: Text('Sign Up', style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                  },
+                ),
+                TextButton(
+                  child: Text('TEMPORARY BYPASS AUTHENTICATION', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
                   },
                 ),
               ],

@@ -8,9 +8,9 @@ class SavedContacts extends StatefulWidget {
   @override
   _SavedContactsState createState() => _SavedContactsState();
 }
-
 class _SavedContactsState extends State<SavedContacts> {
   List<Contact> _savedContacts = [];
+  static const int maxContacts = 5; // Maximum allowed contacts
 
   @override
   void initState() {
@@ -20,8 +20,7 @@ class _SavedContactsState extends State<SavedContacts> {
 
   void _loadSavedContacts() async {
     final prefs = await SharedPreferences.getInstance();
-    final List<String>? savedContactIds =
-    prefs.getStringList('selectedContacts');
+    final List<String>? savedContactIds = prefs.getStringList('selectedContacts');
 
     if (savedContactIds != null && savedContactIds.isNotEmpty) {
       final Iterable<Contact> contacts = await ContactsService.getContacts();
@@ -36,8 +35,9 @@ class _SavedContactsState extends State<SavedContacts> {
   }
 
   void _navigateAndRefresh() async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => CustomContacts()));
+    // Navigate and wait for the selection to be completed
+    await Navigator.of(context).push(MaterialPageRoute(builder: (context) => CustomContacts()));
+    // Reload the contacts after returning from the selection
     _loadSavedContacts();
   }
 
@@ -46,15 +46,13 @@ class _SavedContactsState extends State<SavedContacts> {
     List<String>? savedContactIds = prefs.getStringList('selectedContacts');
     if (savedContactIds != null) {
       setState(() {
-        _savedContacts.removeWhere((contact) =>
-        contact.identifier == contactId); // Remove from UI immediately
+        _savedContacts.removeWhere((contact) => contact.identifier == contactId); // Remove from UI immediately
         savedContactIds.remove(contactId); // Remove from saved list
       });
       await prefs.setStringList('selectedContacts', savedContactIds);
     }
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,4 +123,39 @@ class _SavedContactsState extends State<SavedContacts> {
     );
   }
 
+  // You may need to modify the part of your code responsible for adding contacts
+  // This could be inside your CustomContacts widget or wherever you handle the selection
+  // Below is a pseudo-code example of how you might enforce the limit
+
+  void addContact(String contactId) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? savedContactIds = prefs.getStringList('selectedContacts') ?? [];
+
+    if (savedContactIds.length >= maxContacts) {
+      // Show an alert dialog or a toast message informing the user about the limit
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Limit Reached"),
+            content: Text("You cannot add more than $maxContacts contacts."),
+            actions: [
+              TextButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    if (!savedContactIds.contains(contactId)) {
+      savedContactIds.add(contactId);
+      await prefs.setStringList('selectedContacts', savedContactIds);
+      // Reload or refresh the list to show the newly added contact
+      _loadSavedContacts();
+    }
+  }
 }

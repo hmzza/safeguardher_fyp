@@ -1,53 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:safeguardher/home_page.dart';
-import 'package:safeguardher/login.dart';
+import 'package:safeguardher/login.dart'; // Adjust the path as necessary
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:safeguardher/utils/mainScreen.dart'; // If you're using this for navigation
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   State<SignUp> createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
-  final TextEditingController _usernameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _contactNoController = TextEditingController();
+  bool _isLoading = false;
+
   void _signUp() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
     try {
-      // Attempt to create a new user
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
       Fluttertoast.showToast(
-        msg: "Sign Up Successful",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        msg: "Sign Up Successful. Please login.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
         backgroundColor: Colors.green,
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      // Navigate to the home page or login screen after successful sign up
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mylogin())); // Adjust if you want to navigate to another screen
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mylogin()));
     } on FirebaseAuthException catch (e) {
-      String errorMessage = "An error occurred. Please try again.";
-      if (e.code == 'weak-password') {
-        errorMessage = "The password provided is too weak.";
-      } else if (e.code == 'email-already-in-use') {
-        errorMessage = "An account already exists for that email.";
-      }
+      final errorMessage = e.code == 'weak-password' ? "The password provided is too weak." :
+      e.code == 'email-already-in-use' ? "An account already exists for that email." :
+      "An error occurred. Please try again.";
       Fluttertoast.showToast(
         msg: errorMessage,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Color(0xA0FF0000),
         textColor: Colors.white,
         fontSize: 16.0,
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -58,102 +67,111 @@ class _SignUpState extends State<SignUp> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/loginpage.png'), // Replace with your actual path to background image
+            image: AssetImage('assets/images/loginpage.png'), // Your path to background image
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-            Image.asset('assets/images/logo.png', width: 200), // Replace with your actual path to logo
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 36.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildTextField(
-                      controller: _usernameController,
-                      hintText: 'Username',
-                      icon: Icons.person,
-                    ),
-                    _buildTextField(
-                      controller: _emailController,
-                      hintText: 'Email',
-                      icon: Icons.email,
-                    ),
-                    _buildTextField(
-                      controller: _passwordController,
-                      hintText: 'Password',
-                      icon: Icons.lock,
-                      isPassword: true,
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 36.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/logo.png', width: 200), // Your path to logo
+                  _buildTextField(_emailController, 'Email', Icons.email, false),
+                  _buildTextField(_contactNoController, 'Contact No', Icons.phone, false),
+                  _buildTextField(_passwordController, 'Password', Icons.lock, true),
+                  _buildTextField(_confirmPasswordController, 'Confirm Password', Icons.lock, true),
+                  SizedBox(height: 20),
+                  _isLoading ? CircularProgressIndicator() : _buildSignUpButton(),
+                  _buildLoginButton(),
+                ],
               ),
             ),
-            SizedBox(height: 40),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: Colors.redAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-              ),
-              child: const Text('Sign Up'),
-              onPressed: _signUp,
-            ),
-            TextButton(
-              child: Text('Already have an account? Login', style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => mylogin()));
-              },
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData icon,
-    bool isPassword = false,
-  }) {
+  Widget _buildTextField(TextEditingController controller, String hintText, IconData icon, bool isPassword) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: TextField(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
         controller: controller,
         obscureText: isPassword,
+        validator: (value) => _validateInput(value, hintText, controller),
         decoration: InputDecoration(
-          fillColor: Colors.white.withOpacity(0.85),
+          fillColor: Colors.white.withOpacity(0.8),
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.black54),
           prefixIcon: Icon(icon, color: Colors.pink.shade900),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide.none,
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide.none),
         ),
       ),
     );
   }
 
+  Widget _buildSignUpButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white, backgroundColor: Color(0xFFF54184),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+      ),
+      child: const Text('Sign Up'),
+      onPressed: _signUp,
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return TextButton(
+        child: Text('Already have an account? Login', style: TextStyle(color: Colors.white)),
+      onPressed: () {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mylogin()));
+      },
+    );
+  }
+
+  String? _validateInput(String? value, String fieldName, TextEditingController controller) {
+    if (value == null || value.isEmpty) {
+      return '$fieldName cannot be empty';
+    }
+    switch (fieldName) {
+      case 'Email':
+        if (!value.contains('@')) {
+          return 'Please enter a valid email address';
+        }
+        break;
+      case 'Password':
+        if (value.length < 5) {
+          return 'Password must be at least 5 characters';
+        }
+        break;
+      case 'Confirm Password':
+        if (value != _passwordController.text) {
+          return 'Passwords do not match';
+        }
+        break;
+      case 'Contact No':
+        if (value.length < 10) {
+          return 'Please enter a valid contact number';
+        }
+        break;
+    }
+    return null;
+  }
 
   @override
   void dispose() {
-    // Dispose controllers when the widget is removed from the widget tree
-    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _contactNoController.dispose();
     super.dispose();
   }
-
-// ...
 }
 

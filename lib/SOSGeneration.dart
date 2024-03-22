@@ -126,6 +126,9 @@ class _SOSGenerationState extends State<SOSGeneration>
     // Retrieve custom contacts from shared preferences or another source
     final List<String> whatsappNumbers = contactNumbers; // replace with your contact numbers list
 
+    print("+============================================");
+    print(whatsappNumbers);
+
     for (var number in whatsappNumbers) {
       // Ensure the phone number is in international format and url encoded
       final Uri whatsappUrl = Uri(

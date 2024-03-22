@@ -23,7 +23,7 @@ class _home_pageState extends State<home_page> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Color(0xff48032f),
-        title: Text('Helplines', style: TextStyle(color: Colors.white)),
+        title: Text('SafeGuardHer', style: TextStyle(color: Colors.white)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),

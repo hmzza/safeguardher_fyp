@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/home_page.dart';
 import 'package:safeguardher/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:safeguardher/utils/mainScreen.dart'; // If you're using this for navigation
 
 class SignUp extends StatefulWidget {
@@ -14,13 +16,40 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-  final TextEditingController _CNICController = TextEditingController();
-  final TextEditingController _phoneNoController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _countryController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
+  void _signUp() async {
+    try {
+      // Attempt to create a new user
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      Fluttertoast.showToast(
+        msg: "Sign Up Successful",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      // Navigate to the home page or login screen after successful sign up
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mylogin())); // Adjust if you want to navigate to another screen
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = "An error occurred. Please try again.";
+      if (e.code == 'weak-password') {
+        errorMessage = "The password provided is too weak.";
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = "An account already exists for that email.";
+      }
+      Fluttertoast.showToast(
+        msg: errorMessage,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,42 +87,6 @@ class _SignUpState extends State<SignUp> {
                       hintText: 'Password',
                       icon: Icons.lock,
                       isPassword: true,
-                    ),
-                    _buildTextField(
-                      controller: _confirmPasswordController,
-                      hintText: 'Confirm Password',
-                      icon: Icons.lock_outline,
-                      isPassword: true,
-                    ),
-                    _buildTextField(
-                      controller: _CNICController,
-                      hintText: 'CNIC',
-                      icon: Icons.info,
-                    ),
-                    _buildTextField(
-                      controller: _ageController,
-                      hintText: 'Age',
-                      icon: Icons.cake,
-                    ),
-                    _buildTextField(
-                      controller: _addressController,
-                      hintText: 'Address',
-                      icon: Icons.home,
-                    ),
-                    _buildTextField(
-                      controller: _phoneNoController,
-                      hintText: 'Contact',
-                      icon: Icons.phone,
-                    ),
-                    _buildTextField(
-                      controller: _countryController,
-                      hintText: 'Country',
-                      icon: Icons.flag,
-                    ),
-                    _buildTextField(
-                      controller: _cityController,
-                      hintText: 'City',
-                      icon: Icons.location_city,
                     ),
                     SizedBox(height: 20),
                   ],
@@ -151,11 +144,6 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  void _signUp() {
-    // Implement your signup logic
-    // For demonstration, after sign up, navigate to MainScreen or a confirmation page
-    Navigator.push(context, MaterialPageRoute(builder: (context) => home_page()));
-  }
 
   @override
   void dispose() {
@@ -163,13 +151,6 @@ class _SignUpState extends State<SignUp> {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _CNICController.dispose();
-    _phoneNoController.dispose();
-    _cityController.dispose();
-    _countryController.dispose();
-    _ageController.dispose();
-    _addressController.dispose();
     super.dispose();
   }
 

@@ -63,7 +63,7 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
           left: 160,
           top: 310,
           child: Text(
-            'Call Now',
+            'Call Now W',
             style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,
@@ -112,89 +112,6 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
                 fontWeight: FontWeight.bold),
           )
       ),
-
-
-
-      //
-      //
-      //
-      // Container(
-      //  //color: Colors.grey,
-      //   width: 300,
-      //   height: 120,
-      //   margin: EdgeInsets.only(top: 280,left: 60,right: 60),
-      //     child:ElevatedButton(
-      //       onPressed: () {
-      //         Navigator.push(context, new MaterialPageRoute(
-      //             builder: (context) =>
-      //             new fakeCallNow(value: '',))
-      //         );
-      //       },
-      //       child: Container(
-      //         //color: Colors.white,
-      //           height: 50,
-      //           width: 200,
-      //           margin: EdgeInsets.only(left: 10),
-      //           child: Center(
-      //               child: Text('Call Now',style: TextStyle(fontSize: 20, color: Colors.black),)
-      //           )
-      //       ),
-      //       style: ElevatedButton.styleFrom(
-      //         shape: const RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.all(Radius.circular(50)),
-      //         ),
-      //         padding: EdgeInsets.all(10),
-      //         backgroundColor: Colors.blue, // <-- Button color
-      //         //foregroundColor: Colors.white, // <-- Splash color
-      //       ),
-      //     ),
-      //
-      // ),
-      //
-      //
-      //
-      //
-      //
-      //
-      // //Schedule Later
-      // Container(
-      //   //color: Colors.grey,
-      //   width: 300,
-      //   height: 120,
-      //   margin: EdgeInsets.only(top:500,left: 60,right: 60),
-      //   child:ElevatedButton(
-      //     onPressed: () {
-      //       Navigator.push(context, new MaterialPageRoute(
-      //           builder: (context) =>
-      //           new fakeCallNow(value: '',))
-      //       );
-      //     },
-      //     child: Container(
-      //         //color: Colors.white,
-      //         height: 50,
-      //         width: 200,
-      //         margin: EdgeInsets.only(left: 10),
-      //         child: Center(
-      //             child: Text('Schedule Later',style: TextStyle(fontSize: 20, color: Colors.black),)
-      //         )
-      //     ),
-      //     style: ElevatedButton.styleFrom(
-      //       shape: const RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(50)),
-      //       ),
-      //
-      //       padding: EdgeInsets.all(10),
-      //       backgroundColor: Colors.blue, // <-- Button color
-      //       //foregroundColor: Colors.white, // <-- Splash color
-      //     ),
-      //   ),
-      //
-      // ),
-      //
-
-
-
-
       ],
     ),
     );

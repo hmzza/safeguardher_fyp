@@ -7,6 +7,7 @@ import 'package:safeguardher/threatDetection_mainPage.dart';
 import 'package:safeguardher/utils/carousel_cards.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 
+import 'fakecall_simulator.dart';
 import 'helplines.dart';
 
 class home_page extends StatefulWidget {
@@ -62,7 +63,7 @@ class _home_pageState extends State<home_page> {
                 label: 'Fake Call',
                 description: 'Simulate calls to avoid danger', // Example description
                 onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => fakecallmainpage()),
+                  MaterialPageRoute(builder: (context) => FakeCall_Simulator()),
                 ),
                 icon: Icons.phone_in_talk,
               ),

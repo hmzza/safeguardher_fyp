@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:safeguardher/fakecall.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:safeguardher/fakecall_simulator.dart';
 
 class callpage extends StatefulWidget {
   final String name;
@@ -199,7 +200,7 @@ class _callpageState extends State<callpage> {
                           onPressed: () {
                             stopAudio();
                             Navigator.push(context, new MaterialPageRoute(
-                                builder: (context) =>new fakecall())
+                                builder: (context) =>new FakeCall_Simulator())
                             );
                           },
                         ),

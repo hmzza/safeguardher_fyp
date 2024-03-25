@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/fakecall.dart';
-import 'package:safeguardher/schedule_fakecall.dart';
+import 'package:safeguardher/fakecall_simulator.dart';
 // import 'package:safeguardher/schedule_fakecall.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 
-import 'fakecall_now.dart';
+import 'fakecall_incomingcall.dart';
 
 class fakecallmainpage extends StatefulWidget {
   const fakecallmainpage({super.key});
@@ -85,7 +85,7 @@ class _fakecallmainpageState extends State<fakecallmainpage> {
               context,
               new MaterialPageRoute(
                   builder: (context) =>
-                      new ScheduleFakeCall()),
+                      new FakeCall_Simulator()),
             );
           },
           child: Container(

@@ -68,7 +68,7 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
       _response = 'Recording started...';
     });
 
-    const chunkDuration = Duration(seconds: 15);
+    const chunkDuration = Duration(seconds: 10);
 
     // Function to handle recording logic
     Future<void> _recordChunk() async {
@@ -103,23 +103,21 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
 
   Future<void> _uploadFile(String filePath) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse('https://1826-115-186-57-250.ngrok-free.app/threat'));
+      var request = http.MultipartRequest('POST', Uri.parse('https://57cf-58-65-135-186.ngrok-free.app/threat'));
       request.files.add(await http.MultipartFile.fromPath('audio', filePath));
       var response = await request.send();
 
       final respStr = await response.stream.bytesToString();
-      print("DATA:");
-      print(jsonDecode(respStr));
+      final decodedResp = jsonDecode(respStr); // Decode the JSON response
       if (response.statusCode == 200) {
-        // Assuming the response body contains a JSON object with a boolean field "hateSpeech"
-        final decodedResp = jsonDecode(respStr); // Decode the JSON response
-        final bool hateSpeechDetected = decodedResp['hateSpeech'] ?? false; // Check for hate speech detection
-        print(hateSpeechDetected);
-        if (hateSpeechDetected) {
-          _timer!.cancel();
+        final bool threatDetected = decodedResp['threat'] ?? false;
+        print(threatDetected);
+        if (threatDetected) {
+          _timer?.cancel();
           await _audioRecorder.stopRecorder(); // Ensure recording is stopped
           setState(() {
-            _response = 'Hate speech detected. Recording stopped.';
+            _response = 'Threat detected. Recording stopped.';
+            _showThreatDetectedDialog(); // Show the dialog
           });
         }
       } else {
@@ -133,14 +131,43 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
       });
     }
   }
-
-
-  @override
-  void dispose() {
-    _audioRecorder.closeRecorder();
-    _timer!.cancel();
-    super.dispose();
+  void _showThreatDetectedDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // User must tap a button
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Threat Detected!"),
+          content: Text("Are you safe?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Yes"),
+              onPressed: () {
+                // Handle the user's response accordingly
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+            ),
+            TextButton(
+              child: Text("No"),
+              onPressed: () {
+                // Handle the user's response accordingly
+                // For example, you might call a method to send for help or an SOS
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+
+
+    @override
+    void dispose() {
+      _audioRecorder.closeRecorder();
+      _timer!.cancel();
+      super.dispose();
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -174,11 +201,21 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
                 ),
               ),
               SizedBox(height: 20),
-              Text(_response, style: TextStyle(color: Colors.white)),
+              // Here the server response is shown on the screen
+              Text(
+                _response,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  backgroundColor: Colors.black.withOpacity(0.5), // Add a semi-transparent background for better readability
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
 }

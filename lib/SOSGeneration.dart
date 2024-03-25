@@ -11,10 +11,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SOSGeneration extends StatefulWidget {
   @override
-  _SOSGenerationState createState() => _SOSGenerationState();
+  SOSGenerationState2 createState() => SOSGenerationState2();
+
 }
 
-class _SOSGenerationState extends State<SOSGeneration>
+class SOSGenerationState2 extends State<SOSGeneration>
     with SingleTickerProviderStateMixin {
   final Telephony telephony = Telephony.instance;
   List<String> contactNumbers = [];
@@ -39,10 +40,10 @@ class _SOSGenerationState extends State<SOSGeneration>
   void _loadSavedContactNumbers() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String>? savedContactIds =
-    prefs.getStringList('selectedContacts');
+        prefs.getStringList('selectedContacts');
     if (savedContactIds != null && savedContactIds.isNotEmpty) {
       final Iterable<Contact> contacts =
-      await ContactsService.getContacts(withThumbnails: false);
+          await ContactsService.getContacts(withThumbnails: false);
       final List<String> numbers = contacts
           .where((contact) => savedContactIds.contains(contact.identifier))
           .expand((contact) => contact.phones!.map((phone) => phone.value!))
@@ -73,7 +74,7 @@ class _SOSGenerationState extends State<SOSGeneration>
 
   void sendSOSAlert() async {
     final PermissionStatus locationPermissionStatus =
-    await _requestLocationPermission();
+        await _requestLocationPermission();
     if (locationPermissionStatus != PermissionStatus.granted) {
       _showSnackbar(context, "Location permission is required for SOS.");
       return;
@@ -112,6 +113,7 @@ class _SOSGenerationState extends State<SOSGeneration>
         },
       );
     }
+    _showSOSGeneratedDialog();
   }
 
   void sendSOSWhatsApp() async {
@@ -121,10 +123,12 @@ class _SOSGenerationState extends State<SOSGeneration>
       return;
     }
 
-    String message = "SOS! I need help! Here is my current location: https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}";
+    String message =
+        "SOS! I need help! Here is my current location: https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}";
 
     // Retrieve custom contacts from shared preferences or another source
-    final List<String> whatsappNumbers = contactNumbers; // replace with your contact numbers list
+    final List<String> whatsappNumbers =
+        contactNumbers; // replace with your contact numbers list
 
     print("+============================================");
     print(whatsappNumbers);
@@ -147,11 +151,11 @@ class _SOSGenerationState extends State<SOSGeneration>
         // Break the loop after opening the URL for the first number
         break;
       } else {
-        _showSnackbar(context, "WhatsApp is not installed or not available for the number $number.");
+        _showSnackbar(context,
+            "WhatsApp is not installed or not available for the number $number.");
       }
     }
   }
-
 
   void _onSOSPressed() async {
     setState(() {
@@ -171,6 +175,26 @@ class _SOSGenerationState extends State<SOSGeneration>
     });
   }
 
+  void _showSOSGeneratedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("SOS Generated!"),
+          content: Text("Your SOS message has been sent."),
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,7 +210,6 @@ class _SOSGenerationState extends State<SOSGeneration>
               ),
             ),
           ),
-
           Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -214,23 +237,40 @@ class _SOSGenerationState extends State<SOSGeneration>
                   ),
                 ),
                 SizedBox(height: 40),
-                ClipOval(
-                  child: Material(
-                    color: Colors.transparent, // Set the color to transparent
-                    child: InkWell(
-                      splashColor: Colors.red.withOpacity(0.3),
-                      // Splash color over the image
-                      onTap: _onSOSPressed,
-                      // Trigger SOS function when image is tapped
-                      child: Ink.image(
-                        image: AssetImage('assets/images/sos.png'),
-                        fit: BoxFit.cover,
-                        width: 400,
-                        height: 400,
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        // Color of the shadow
+                        spreadRadius: 1,
+                        // Spread radius
+                        blurRadius: 10,
+                        // Blur radius
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.transparent, // Set the color to transparent
+                      child: InkWell(
+                        splashColor: Colors.red.withOpacity(0.3),
+                        // Splash color over the image
+                        onTap: _onSOSPressed,
+                        // Trigger SOS function when image is tapped
+                        child: Ink.image(
+                          image: AssetImage('assets/images/sos.png'),
+                          fit: BoxFit.cover,
+                          width: 300,
+                          height: 300,
+                        ),
                       ),
                     ),
                   ),
                 ),
+                SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: sendSOSWhatsApp,
                   style: ElevatedButton.styleFrom(
@@ -238,7 +278,6 @@ class _SOSGenerationState extends State<SOSGeneration>
                   ),
                   child: Text('Send SOS through WhatsApp'),
                 ),
-
               ],
             ),
           ),

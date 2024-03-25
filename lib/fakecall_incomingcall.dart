@@ -4,37 +4,37 @@ import 'dart:math';
 import 'package:just_audio/just_audio.dart';
 import 'package:safeguardher/CallPage.dart';
 import 'package:safeguardher/fakecall.dart';
+import 'package:safeguardher/fakecall_simulator.dart';
 
 class fakeCallNow extends StatefulWidget {
   final String value;
   final String? selectedGender;
   final String? selectedLang;
-  const fakeCallNow({Key? key, required this.value, required this.selectedGender, required this.selectedLang}) : super(key: key);
+
+  const fakeCallNow(
+      {Key? key,
+      required this.value,
+      required this.selectedGender,
+      required this.selectedLang})
+      : super(key: key);
 
   @override
   State<fakeCallNow> createState() => _fakeCallNowState();
 }
 
-class _fakeCallNowState extends State<fakeCallNow>
-{
+class _fakeCallNowState extends State<fakeCallNow> {
   late String selectedLang = "${widget.selectedLang}";
   late String Name = "${widget.value}";
   late AudioPlayer audioPlayer;
   String areaCode = "+92";
   String prefix = "30";
-  var LastFour = Random().nextInt(10000000)+9999999;
+  var LastFour = Random().nextInt(10000000) + 9999999;
 
   var player;
   bool ringing = false;
 
-
-
-
-
-
   @override
-  void initState()
-  {
+  void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -46,18 +46,15 @@ class _fakeCallNowState extends State<fakeCallNow>
 
   void playRingtone() async {
     try {
-      final duration = await player.setUrl(
-          "asset:assets/Audio/RINGTONE.mp3");
+      final duration = await player.setUrl("asset:assets/Audio/RINGTONE.mp3");
       await player.play();
       ringing = true;
-    } catch (e)
-    {
+    } catch (e) {
       print('Error playing ringtone: $e');
     }
   }
 
-  void stopRingtone() async
-  {
+  void stopRingtone() async {
     await player.stop();
     setState(() {
       ringing = false;
@@ -66,7 +63,6 @@ class _fakeCallNowState extends State<fakeCallNow>
 
   void answerCall() {
     stopRingtone();
-
   }
 
   @override
@@ -119,9 +115,10 @@ class _fakeCallNowState extends State<fakeCallNow>
                           backgroundColor: Colors.red,
                           onPressed: () {
                             stopRingtone();
-                            Navigator.push(context, new MaterialPageRoute(
-                                builder: (context) =>new fakecall())
-                            );
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new FakeCall_Simulator()));
                           },
                         ),
                       ),
@@ -136,9 +133,16 @@ class _fakeCallNowState extends State<fakeCallNow>
                           backgroundColor: Colors.green,
                           onPressed: () {
                             answerCall();
-                            Navigator.push(context, new MaterialPageRoute(
-                                builder: (context) =>new callpage(lastFour: LastFour, areaCode: areaCode, prefix: prefix, name: Name, Lang: selectedLang, ))
-                            );
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new callpage(
+                                          lastFour: LastFour,
+                                          areaCode: areaCode,
+                                          prefix: prefix,
+                                          name: Name,
+                                          Lang: selectedLang,
+                                        )));
                           },
                         ),
                       ),

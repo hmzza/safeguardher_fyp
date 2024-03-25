@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:just_audio/just_audio.dart';
 import 'package:safeguardher/CallPage.dart';
-import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/fakecall_simulator.dart';
 
 class fakeCallNow extends StatefulWidget {
@@ -25,6 +24,7 @@ class fakeCallNow extends StatefulWidget {
 class _fakeCallNowState extends State<fakeCallNow> {
   late String selectedLang = "${widget.selectedLang}";
   late String Name = "${widget.value}";
+  late String gender = "${widget.selectedGender}";
   late AudioPlayer audioPlayer;
   String areaCode = "+92";
   String prefix = "30";
@@ -39,23 +39,28 @@ class _fakeCallNowState extends State<fakeCallNow> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    //audioPlayer = AudioPlayer();
-    player = AudioPlayer(); // Create a player
-    playRingtone();
+    audioPlayer = AudioPlayer(); // Initialize the audio player
+    playRingtone(); // Call this method to play the ringtone
   }
 
   void playRingtone() async {
     try {
-      final duration = await player.setUrl("asset:assets/Audio/RINGTONE.mp3");
-      await player.play();
-      ringing = true;
+      await audioPlayer.setAsset('assets/Audio/ringtone.mp3'); // Make sure this is the correct path to your audio asset
+      await audioPlayer.play();
+      print("Playing audio");// Play the audio
     } catch (e) {
-      print('Error playing ringtone: $e');
+      print("Could not load the audio: $e");
     }
   }
 
+  @override
+  void dispose() {
+    audioPlayer.dispose(); // Dispose of the player when the widget is disposed
+    super.dispose();
+  }
+
   void stopRingtone() async {
-    await player.stop();
+    await audioPlayer.stop();
     setState(() {
       ringing = false;
     });
@@ -132,15 +137,17 @@ class _fakeCallNowState extends State<fakeCallNow> {
                           child: Icon(Icons.phone, size: 34),
                           backgroundColor: Colors.green,
                           onPressed: () {
+
                             answerCall();
                             Navigator.push(
                                 context,
                                 new MaterialPageRoute(
                                     builder: (context) => new callpage(
-                                          lastFour: LastFour,
+                                          name: Name,
+                                          genderSelection: gender,
                                           areaCode: areaCode,
                                           prefix: prefix,
-                                          name: Name,
+                                        lastFour: LastFour,
                                           Lang: selectedLang,
                                         )));
                           },
@@ -159,17 +166,3 @@ class _fakeCallNowState extends State<fakeCallNow> {
     );
   }
 }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-//     throw UnimplementedError();
-//   }
-// }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-//     throw UnimplementedError();
-//   }
-// }

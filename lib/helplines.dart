@@ -83,6 +83,7 @@ class _HelpLinesState extends State<HelpLines> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: Color(0xff48032f),
         title: Text('Helplines', style: TextStyle(color: Colors.white)),

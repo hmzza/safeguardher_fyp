@@ -33,10 +33,9 @@ class _myloginState extends State<mylogin> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushNamed(
         context,
-        MaterialPageRoute(builder: (context) => MainScreen()),
-            (Route<dynamic> route) => false,
+        '/main_screen'
       );
     } on FirebaseAuthException catch (e) {
       String message = "An error occurred";
@@ -119,19 +118,24 @@ class _myloginState extends State<mylogin> {
                 TextButton(
                   child: Text('Forget Password?', style: TextStyle(color: Colors.white)),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePwd()));
+
+                    Navigator.pushNamed(context, '/changepassword');
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePwd()));
                   },
                 ),
                 TextButton(
                   child: Text('Sign Up', style: TextStyle(color: Colors.white)),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+
+                    Navigator.pushNamed(context, '/signup');
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
                   },
                 ),
                 TextButton(
                   child: Text('TEMPORARY BYPASS AUTHENTICATION', style: TextStyle(color: Colors.white)),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                    Navigator.pushNamed(context, '/main_screen');
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
                   },
                 ),
               ],

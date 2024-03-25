@@ -31,7 +31,7 @@ class _AccountSettingsState extends State<AccountSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(titleText: 'Settings'),
+      appBar: CustomAppBar(titleText: 'Settings', automaticallyImplyLeading: false),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

@@ -2,15 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:safeguardher/SavedContacts.dart';
 import 'package:safeguardher/accountsettings.dart';
-// import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/helplines.dart';
 import 'package:safeguardher/home_page.dart';
-// import 'package:safeguardher/new_test_page.dart';
-
-// import '../CustomContacts.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -19,48 +15,40 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.help), label: 'Helplines'),
-          BottomNavigationBarItem(icon: Icon(Icons.contacts), label: 'Contacts'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+    return WillPopScope(
+      onWillPop: () async {
+        // Handle back button press if necessary or return true to pop
+        if (Navigator.of(context).canPop()){
+          Navigator.of(context).pop();
+        }
+        return false;
+      },
+      child: CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.question_circle), label: 'Helplines'),
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.person_2_square_stack), label: 'Contacts'),
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.gear), label: 'Settings'),
           ],
           activeColor: Colors.pink,
-          backgroundColor: Colors.black, // Set the background color to black
+          backgroundColor: Colors.black,
         ),
-        tabBuilder: (context, index){
-          switch(index){
+        tabBuilder: (BuildContext context, int index) {
+          switch (index) {
             case 0:
-              return CupertinoTabView(
-                builder: (context){
-                  return CupertinoPageScaffold(child: home_page());
-                },
-              );
-
-              case 1:
-              return CupertinoTabView(
-                builder: (context){
-                  return CupertinoPageScaffold(child: HelpLines());
-                },
-              );
-
-              case 2:
-              return CupertinoTabView(
-                builder: (context){
-                  return CupertinoPageScaffold(child: SavedContacts());
-                },
-              );
-
-              case 3:
-              return CupertinoTabView(
-                builder: (context){
-                  return CupertinoPageScaffold(child: AccountSettings());
-                },
-              );
+              return CupertinoPageScaffold(child: home_page());
+            case 1:
+              return CupertinoPageScaffold(child: HelpLines());
+            case 2:
+              return CupertinoPageScaffold(child: SavedContacts());
+            case 3:
+              return CupertinoPageScaffold(child: AccountSettings());
+            default:
+              return Container();
           }
-          return Container();
-        }
+        },
+      ),
     );
   }
 }

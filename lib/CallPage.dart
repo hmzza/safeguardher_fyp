@@ -9,6 +9,7 @@ import 'package:safeguardher/fakecall_simulator.dart';
 
 class callpage extends StatefulWidget {
   final String name;
+  final String genderSelection;
   final String areaCode;
   final String prefix;
   final lastFour;
@@ -18,6 +19,7 @@ class callpage extends StatefulWidget {
   const callpage({
     Key? key,
     required this.name,
+    required this.genderSelection,
     required this.areaCode,
     required this.prefix,
     required this.lastFour,
@@ -55,8 +57,19 @@ class _callpageState extends State<callpage> {
   }
 
   void playAudio() async {
+    String audioFile = 'assets/Audio/'; // Base path for audio files
+    // Choose the audio file based on the gender selection
+    if (widget.genderSelection == 'Male') {
+      print("malemalemalmlmelmalmemlamelm");
+      audioFile += 'maleaudio.mp3';
+    } else if (widget.genderSelection == 'Female') {
+      audioFile += 'femaleaudio.mp3';
+    } else {
+      print('Invalid gender selection');
+      return; // Early return if gender selection is invalid
+    }
     try {
-      await player.setAsset('assets/Audio/maleaudio.mp3');
+      await player.setAsset(audioFile);
       await player.play();
       setState(() {
         audioPlaying = true;
@@ -128,7 +141,6 @@ class _callpageState extends State<callpage> {
                 ],
               ),
               SizedBox(
-
                 height: MediaQuery.of(context).size.height / 5.6,
               ),
               Row(
@@ -142,7 +154,8 @@ class _callpageState extends State<callpage> {
                   ),
                   Column(
                     children: [
-                      Icon(Icons.keyboard_alt_outlined, color: Colors.white, size: 32),
+                      Icon(Icons.keyboard_alt_outlined,
+                          color: Colors.white, size: 32),
                       Text("keypad"),
                     ],
                   ),
@@ -151,15 +164,15 @@ class _callpageState extends State<callpage> {
                       GestureDetector(
                         onTap: toggleSpeaker,
                         child: Icon(
-                          isSpeakerEnabled ? Icons.volume_up_outlined : Icons.hearing,
+                          isSpeakerEnabled
+                              ? Icons.volume_up_outlined
+                              : Icons.hearing,
                           color: Colors.white,
                           size: 32,
                         ),
                       ),
-
                       Text("Speaker"),
                     ],
-
                   ),
                 ],
               ),
@@ -175,7 +188,8 @@ class _callpageState extends State<callpage> {
                   ),
                   Column(
                     children: [
-                      Icon(Icons.video_call_outlined, color: Colors.white, size: 32),
+                      Icon(Icons.video_call_outlined,
+                          color: Colors.white, size: 32),
                       Text("keypad"),
                     ],
                   ),
@@ -199,9 +213,8 @@ class _callpageState extends State<callpage> {
                           backgroundColor: Colors.red,
                           onPressed: () {
                             stopAudio();
-                            Navigator.push(context, new MaterialPageRoute(
-                                builder: (context) =>new FakeCall_Simulator())
-                            );
+                            int count = 0;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
                           },
                         ),
                       ),

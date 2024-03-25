@@ -106,6 +106,8 @@ flutter:
     - assets/images/d.png
     - assets/images/e.png
     - assets/images/darkmaroon.png
+    - assets/Audio/
+    - assets/Audio/ringtone.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -22,6 +22,7 @@ class _home_pageState extends State<home_page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: Color(0xff48032f),
         title: Text('SafeGuardHer', style: TextStyle(color: Colors.white)),

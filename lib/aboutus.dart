@@ -18,6 +18,7 @@ class _AboutUsState extends State<AboutUs> {
     return Scaffold(
       appBar: CustomAppBar(titleText: 'About Us'),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/darkbgwithfade.png'),

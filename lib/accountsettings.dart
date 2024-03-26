@@ -106,23 +106,36 @@ class _AccountSettingsState extends State<AccountSettings> {
   }
 
   Widget _settingOption(BuildContext context, {required String title, required IconData icon, required Widget destination}) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(title, style: TextStyle(color: Colors.white)),
-      trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => destination)),
+    return Material(
+      color: Colors.transparent, // This is important for the ripple effect
+      child: InkWell(
+        splashColor: Colors.white24, // Light white splash color for the ripple effect
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => destination)),
+        child: ListTile(
+          leading: Icon(icon, color: Colors.white),
+          title: Text(title, style: TextStyle(color: Colors.white)),
+          trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
+        ),
+      ),
     );
   }
 
   Widget _logoutButton(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.exit_to_app, color: Colors.red),
-      title: Text('Logout', style: TextStyle(color: Colors.red)),
-      onTap: () {
-        // TODO: Implement logout functionality
-      },
+    return Material(
+      color: Colors.transparent, // This is important for the ripple effect
+      child: InkWell(
+        splashColor: Colors.redAccent.shade200, // Light red splash color for the ripple effect
+        onTap: () {
+          // TODO: Implement logout functionality
+        },
+        child: ListTile(
+          leading: Icon(Icons.exit_to_app, color: Colors.red),
+          title: Text('Logout', style: TextStyle(color: Colors.red)),
+        ),
+      ),
     );
   }
+
 }
 
 

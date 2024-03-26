@@ -91,60 +91,57 @@ class _home_pageState extends State<home_page> {
     required VoidCallback onTap,
     required IconData icon,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.all(10.0),
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFB44E85), Color(0xFFB44E85)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
+    return Card(
+      margin: EdgeInsets.all(10.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10.0),
+        child: Ink( // Use Ink for the gradient and keep the ripple effect
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFB44E85), Color(0xFFB44E85)],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-        ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontFamily: 'Open Sans', // Set the font family to Open Sans
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: Colors.white,
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontFamily: 'Open Sans', // Set the font family to Open Sans
-                      fontSize: 16,
-                      color: Colors.white.withOpacity(0.7), // Slightly transparent white
+                    SizedBox(height: 5), // Adjust spacing as needed
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(0.7),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Icon(
-              icon,
-              color: Colors.white.withOpacity(0.9), // Reduced transparency of the icon
-              size: 40,
-            ),
-          ],
+              Icon(
+                icon,
+                color: Colors.white,
+                size: 40,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
 }

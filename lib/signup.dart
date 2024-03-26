@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safeguardher/login.dart'; // Adjust the path as necessary
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -26,10 +28,17 @@ class _SignUpState extends State<SignUp> {
       _isLoading = true;
     });
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      String userId = userCredential.user!.uid; // Getting the user ID
+      // Adding user details to Firestore
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        'name': _nameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'contactNo': _contactNoController.text.trim(),
+      });
       Fluttertoast.showToast(
         msg: "Sign Up Successful. Please login.",
         toastLength: Toast.LENGTH_LONG,
@@ -38,6 +47,7 @@ class _SignUpState extends State<SignUp> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mylogin()));
     } on FirebaseAuthException catch (e) {
       final errorMessage = e.code == 'weak-password' ? "The password provided is too weak." :
@@ -80,6 +90,7 @@ class _SignUpState extends State<SignUp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/images/logo.png', width: 200), // Your path to logo
+                  _buildTextField(_nameController, 'Name', Icons.person, false),
                   _buildTextField(_emailController, 'Email', Icons.email, false),
                   _buildTextField(_contactNoController, 'Contact No', Icons.phone, false),
                   _buildTextField(_passwordController, 'Password', Icons.lock, true),
@@ -167,6 +178,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -174,4 +186,3 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
   }
 }
-

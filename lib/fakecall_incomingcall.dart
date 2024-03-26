@@ -82,7 +82,9 @@ class _fakeCallNowState extends State<fakeCallNow> {
               Text(
                 "${widget.value}",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 50),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 50),
               ),
               Text(
                 "$areaCode-$prefix$LastFour",
@@ -120,10 +122,8 @@ class _fakeCallNowState extends State<fakeCallNow> {
                           backgroundColor: Colors.red,
                           onPressed: () {
                             stopRingtone();
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) => new FakeCall_Simulator()));
+                            int count = 0;
+                            Navigator.of(context).popUntil((_) => count++ >= 1);
                           },
                         ),
                       ),

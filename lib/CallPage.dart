@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
-import 'package:safeguardher/fakecall.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:safeguardher/fakecall_simulator.dart';
+
 
 class callpage extends StatefulWidget {
   final String name;
@@ -51,10 +49,15 @@ class _callpageState extends State<callpage> {
   Future<void> _initAudioSession() async {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.speech());
-    // Initially set to speaker
-    await session.setActive(true);
-    //await session.setPreferredDevice(AudioDevice.speaker);
+    // Handle unplugging of earphones, etc.
+    session.interruptionEventStream.listen((event) {
+      // Handle interruption events, like pausing audio on phone call
+    });
+    session.becomingNoisyEventStream.listen((_) {
+      // Pause playback if the user unplugs headphones
+    });
   }
+
 
   void playAudio() async {
     String audioFile = 'assets/Audio/'; // Base path for audio files
@@ -124,7 +127,9 @@ class _callpageState extends State<callpage> {
               Text(
                 "${widget.name}",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 50),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 50),
               ),
               Text(
                 "${widget.areaCode}${widget.prefix}${widget.lastFour}",

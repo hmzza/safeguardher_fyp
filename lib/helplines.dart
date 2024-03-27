@@ -143,7 +143,7 @@ class _HelpLinesState extends State<HelpLines> {
                 itemBuilder: (context, index) {
                   final helpline = filteredHelplines[index];
                   return Card(
-                    color: Colors.black54,
+                    color: Color(0x3AF54184),
                     child: ListTile(
                       title: Text(helpline['name'] ?? '', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                       subtitle: Text(helpline['number'] ?? '', style: TextStyle(color: Color(0xFFF54184))),

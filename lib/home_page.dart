@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:safeguardher/SOSGeneration.dart';
 import 'package:safeguardher/accountsettings.dart';
 // import 'package:safeguardher/fakecall.dart';
-import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/threatDetection_mainPage.dart';
 import 'package:safeguardher/utils/carousel_cards.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';

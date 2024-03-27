@@ -1,4 +1,5 @@
 import 'dart:async';
+
 // import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -39,7 +40,8 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
   Future<void> _requestPermissionsAndInit() async {
     final micStatus = await Permission.microphone.request();
     final storageStatus = await Permission.storage.request();
-    if (micStatus != PermissionStatus.granted || storageStatus != PermissionStatus.granted) {
+    if (micStatus != PermissionStatus.granted ||
+        storageStatus != PermissionStatus.granted) {
       setState(() {
         _response = 'Microphone or Storage permission not granted';
       });
@@ -74,7 +76,8 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
     Future<void> _recordChunk() async {
       print("Timer Starting");
       final tempDir = await getTemporaryDirectory();
-      final filePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.wav';
+      final filePath =
+          '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.wav';
       await _audioRecorder.startRecorder(toFile: filePath);
       await Future.delayed(chunkDuration); // Wait for 15 seconds
       await _audioRecorder.stopRecorder();
@@ -91,7 +94,6 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
     });
   }
 
-
   Future<void> _stopRecording() async {
     _timer!.cancel();
     _timer = null;
@@ -103,14 +105,19 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
 
   Future<void> _uploadFile(String filePath) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse('https://57cf-58-65-135-186.ngrok-free.app/threat'));
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('http://16.171.28.60:8080/threat'));
       request.files.add(await http.MultipartFile.fromPath('audio', filePath));
+      print("Uploading data to server");
       var response = await request.send();
-
+      print("Response received");
+      print(response);
       final respStr = await response.stream.bytesToString();
+      print(respStr);
       final decodedResp = jsonDecode(respStr); // Decode the JSON response
       if (response.statusCode == 200) {
-        final bool threatDetected = decodedResp['threat'] ?? false;
+        final bool threatDetected =
+            decodedResp['threat'].toString().toLowerCase() == 'true';
         print(threatDetected);
         if (threatDetected) {
           _timer?.cancel();
@@ -122,7 +129,8 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
         }
       } else {
         setState(() {
-          _response = 'Failed to upload audio. Response code: ${response.statusCode}';
+          _response =
+              'Failed to upload audio. Response code: ${response.statusCode}';
         });
       }
     } catch (e) {
@@ -131,6 +139,7 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
       });
     }
   }
+
   void _showThreatDetectedDialog() {
     showDialog(
       context: context,
@@ -161,13 +170,12 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
     );
   }
 
-
-    @override
-    void dispose() {
-      _audioRecorder.closeRecorder();
-      _timer!.cancel();
-      super.dispose();
-    }
+  @override
+  void dispose() {
+    _audioRecorder.closeRecorder();
+    _timer!.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +193,8 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ElevatedButton(
-                onPressed: _isRecorderInitialized ? _startContinuousRecording : null,
+                onPressed:
+                    _isRecorderInitialized ? _startContinuousRecording : null,
                 child: Text('Start Continuous Recording'),
               ),
               ElevatedButton(
@@ -197,7 +206,8 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   side: BorderSide(color: Colors.white, width: 2),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4)),
                 ),
               ),
               SizedBox(height: 20),
@@ -207,7 +217,8 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.0,
-                  backgroundColor: Colors.black.withOpacity(0.5), // Add a semi-transparent background for better readability
+                  backgroundColor: Colors.black.withOpacity(
+                      0.5), // Add a semi-transparent background for better readability
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -217,5 +228,4 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
       ),
     );
   }
-
 }

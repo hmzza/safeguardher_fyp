@@ -5,7 +5,6 @@ import 'package:safeguardher/changepassword.dart';
 import 'package:safeguardher/checkmail.dart';
 import 'package:safeguardher/editprofile.dart';
 import 'package:safeguardher/fakecall.dart';
-import 'package:safeguardher/fakecall_mainpage.dart';
 import 'package:safeguardher/helplines.dart';
 import 'package:safeguardher/login.dart';
 import 'package:safeguardher/simple_recorder.dart';
@@ -38,12 +37,6 @@ class MyNavigatorObserver extends NavigatorObserver {
     printCurrentNavigatorStack();
   }
 
-  // @override
-  // void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-  //   super.didPop(route, previousRoute);
-  //   printCurrentNavigatorStack();
-  // }
-
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didRemove(route, previousRoute);
@@ -68,6 +61,7 @@ class MyNavigatorObserver extends NavigatorObserver {
 void main() async {
   // Ensure the Flutter engine is initialized before calling Firebase
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -89,7 +83,6 @@ void main() async {
       '/home_page': (context) => home_page(),
       '/main_screen': (context) => MainScreen(),
       '/account_settings': (context) => AccountSettings(),
-      '/fakecallmainpage': (context) => fakecallmainpage(),
       '/fakecall_simulator': (context) => FakeCall_Simulator(),
       '/audio_recorder': (context) => AudioRecorderUploader(),
       '/aboutUs': (context) => AboutUs(),

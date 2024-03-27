@@ -58,6 +58,7 @@ class _SavedContactsState extends State<SavedContacts> {
     return Scaffold(
       appBar: CustomAppBar(titleText: 'Custom Contacts'),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/darkbgwithfade.png"),
@@ -117,9 +118,6 @@ class _SavedContactsState extends State<SavedContacts> {
         tooltip: 'Edit Contacts',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: BottomAppBar(
-        child: Container(height: 0), // Placeholder for your BottomAppBar
-      ),
     );
   }
 

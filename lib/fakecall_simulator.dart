@@ -106,13 +106,15 @@ class _FakeCall_SimulatorState extends State<FakeCall_Simulator> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Fake Call Simulator'),
+          title: const Text('Fake Call Simulator', style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xff48032f),
           // Customize your AppBar theme here
           elevation: 0,
 
           centerTitle: true,
           bottom: TabBar(
+            labelColor: Colors.white, // active tab text color
+            unselectedLabelColor: Colors.white,
             tabs: [
               Tab(text: 'Call Now'),
               Tab(text: 'Schedule Call'),

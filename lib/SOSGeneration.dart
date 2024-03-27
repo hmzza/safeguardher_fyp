@@ -276,7 +276,7 @@ class SOSGenerationState2 extends State<SOSGeneration>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0x910B9801), // WhatsApp color
                   ),
-                  child: Text('Send SOS through WhatsApp'),
+                  child: Text('Send SOS through WhatsApp', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

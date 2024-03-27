@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/SOSGeneration.dart';
 import 'package:safeguardher/accountsettings.dart';
+
 // import 'package:safeguardher/fakecall.dart';
 import 'package:safeguardher/threatDetection_mainPage.dart';
 import 'package:safeguardher/utils/carousel_cards.dart';
@@ -25,12 +26,18 @@ class _home_pageState extends State<home_page> {
         centerTitle: true,
         backgroundColor: Color(0xff48032f),
         title: Text('SafeGuardHer', style: TextStyle(color: Colors.white)),
+        leading: Padding(
+          padding: EdgeInsets.all(8.0), // Adjust padding as needed
+          child: Image.asset(
+              'assets/images/logo.png'), // Replace with your logo asset path
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AccountSettings(), // Replace with your settings page class
+                builder: (context) =>
+                    AccountSettings(), // Replace with your settings page class
               ));
             },
           ),
@@ -53,15 +60,18 @@ class _home_pageState extends State<home_page> {
               SizedBox(height: 40),
               featureCard(
                 label: 'Threat Detection',
-                description: 'Monitor and alert in real-time', // Example description
+                description: 'Monitor and alert in real-time',
+                // Example description
                 onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AudioRecorderUploader()),
+                  MaterialPageRoute(
+                      builder: (context) => AudioRecorderUploader()),
                 ),
                 icon: Icons.security,
               ),
               featureCard(
                 label: 'Fake Call',
-                description: 'Simulate calls to avoid danger', // Example description
+                description: 'Simulate calls to avoid danger',
+                // Example description
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => FakeCall_Simulator()),
                 ),
@@ -69,16 +79,15 @@ class _home_pageState extends State<home_page> {
               ),
               featureCard(
                 label: 'SOS Alert',
-                description: 'Send your location to contacts', // Example description
+                description: 'Send your location to contacts',
+                // Example description
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SOSGeneration()),
                 ),
                 icon: Icons.add_alert,
               ),
-
             ],
           ),
-
         ],
       ),
     );
@@ -96,7 +105,8 @@ class _home_pageState extends State<home_page> {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(10.0),
-        child: Ink( // Use Ink for the gradient and keep the ripple effect
+        child: Ink(
+          // Use Ink for the gradient and keep the ripple effect
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFFB44E85), Color(0xFFB44E85)],
@@ -142,5 +152,4 @@ class _home_pageState extends State<home_page> {
       ),
     );
   }
-
 }

@@ -20,15 +20,24 @@ class SOSGenerationState2 extends State<SOSGeneration>
   final Telephony telephony = Telephony.instance;
   List<String> contactNumbers = [];
   AnimationController? _animationController;
+  Animation<double>? _scaleAnimation;
   Color _warningTextColor = Colors.white;
 
   @override
   void initState() {
     super.initState();
     _loadSavedContactNumbers();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-    _animationController!.repeat(reverse: true);
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    )..repeat(reverse: true);
+
+    _scaleAnimation = Tween(begin: 0.95, end: 1.05).animate(
+      CurvedAnimation(
+        parent: _animationController!,
+        curve: Curves.easeInOut,
+      ),
+    );
   }
 
   @override
@@ -36,7 +45,6 @@ class SOSGenerationState2 extends State<SOSGeneration>
     _animationController?.dispose();
     super.dispose();
   }
-
   void _loadSavedContactNumbers() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String>? savedContactIds =

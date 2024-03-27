@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'dart:convert';
 
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {

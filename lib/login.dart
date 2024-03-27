@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:safeguardher/changepassword.dart';
 import 'package:safeguardher/home_page.dart';
-// import 'package:safeguardher/fakecall.dart';
-// import 'package:safeguardher/forgetpassword.dart';
-// import 'package:safeguardher/home_page.dart';
 import 'package:safeguardher/signup.dart';
 import 'package:safeguardher/utils/mainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 
 class mylogin extends StatefulWidget {
   const mylogin({super.key});
@@ -55,6 +53,7 @@ class _myloginState extends State<mylogin> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +114,17 @@ class _myloginState extends State<mylogin> {
                   ),
                   child: const Text('Login'),
                   onPressed: _login,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, backgroundColor: Color(0xFFF54184),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                  ),
+                  child: const Text('Sign in with Google',style: TextStyle(fontSize: 5,color: Colors.white)),
+                  onPressed: _signInWithGoogle,
                 ),
                 TextButton(
                   child: Text('Forget Password?', style: TextStyle(color: Colors.white)),

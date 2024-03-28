@@ -3,6 +3,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'CustomContacts.dart'; // Ensure this import points to your CustomContacts.dart file
+// import 'package:marquee/marquee.dart';
 
 class SavedContacts extends StatefulWidget {
   @override
@@ -23,7 +24,14 @@ class _SavedContactsState extends State<SavedContacts> {
     final List<String>? savedContactIds = prefs.getStringList('selectedContacts');
 
     if (savedContactIds != null && savedContactIds.isNotEmpty) {
-      final Iterable<Contact> contacts = await ContactsService.getContacts();
+      // Fetch contacts with only needed fields (for performance)
+      final Iterable<Contact> contacts = await ContactsService.getContacts(
+        withThumbnails: false,
+        // iOS-only: Uncomment the line below if you only need names and numbers
+        // iOSOptions: IOSOptions(contactFields: [IOSContactField.givenName, IOSContactField.familyName, IOSContactField.phones]),
+      );
+
+      // Filter and convert to list asynchronously
       final List<Contact> filteredContacts = contacts
           .where((contact) => savedContactIds.contains(contact.identifier))
           .toList();
@@ -31,8 +39,14 @@ class _SavedContactsState extends State<SavedContacts> {
       setState(() {
         _savedContacts = filteredContacts;
       });
+    } else {
+      // If no contacts are saved or available
+      setState(() {
+        _savedContacts = [];
+      });
     }
   }
+
 
   void _navigateAndRefresh() async {
     // Navigate and wait for the selection to be completed
@@ -56,7 +70,7 @@ class _SavedContactsState extends State<SavedContacts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(titleText: 'Custom Contacts'),
+      appBar: CustomAppBar(titleText: 'Custom Contacts', automaticallyImplyLeading: false),
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
@@ -67,6 +81,17 @@ class _SavedContactsState extends State<SavedContacts> {
         ),
         child: Column(
           children: <Widget>[
+            SizedBox(height: 5),
+            Text(
+              'Maximum 5 contacts are allowed in a list',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF989898), // You can change this to the color that fits your design
+                fontSize: 18, // Adjust the size as needed
+                fontWeight: FontWeight.bold, // Adjust the weight as needed
+              ),
+            ),
+            SizedBox(height: 10),
             Expanded(
               child: _savedContacts.isEmpty
                   ? Center(
@@ -96,6 +121,7 @@ class _SavedContactsState extends State<SavedContacts> {
                 },
               ),
             ),
+
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
               child: Text(
@@ -103,7 +129,7 @@ class _SavedContactsState extends State<SavedContacts> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xA8F54184), // You can change this to the color that fits your design
-                  fontSize: 16, // Adjust the size as needed
+                  fontSize: 18, // Adjust the size as needed
                   fontWeight: FontWeight.w300, // Adjust the weight as needed
                 ),
               ),

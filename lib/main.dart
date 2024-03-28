@@ -61,12 +61,11 @@ class MyNavigatorObserver extends NavigatorObserver {
 void main() async {
   // Ensure the Flutter engine is initialized before calling Firebase
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
-  // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Initialize Firebase
+
 
   // Run the app
   runApp(MaterialApp(

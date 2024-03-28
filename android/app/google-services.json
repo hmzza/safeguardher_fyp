@@ -12,7 +12,12 @@
           "package_name": "com.example.safeguardher"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "399089832254-tp8d3nv803v6b5qg2j7neaa1cphj1bq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBlSGQHGSLypc1sTswbyFvTvoKpwk_gEBo"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399089832254-tp8d3nv803v6b5qg2j7neaa1cphj1bq7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "399089832254-s9cukb2mitqa1tniq2olkvhphqstrg2o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.safeguardher.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }

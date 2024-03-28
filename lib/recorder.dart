@@ -177,10 +177,10 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   void play() {
     print("PLayer path: $completePath");
-    assert(_mPlayerIsInited &&
-        _mplaybackReady &&
-        _mRecorder!.isStopped &&
-        _mPlayer!.isStopped);
+    // assert(_mPlayerIsInited &&
+    //     _mplaybackReady &&
+    //     _mRecorder!.isStopped &&
+    //     _mPlayer!.isStopped);
     _mPlayer!
         .startPlayer(
         fromURI: completePath,

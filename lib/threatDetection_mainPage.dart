@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'dart:convert';
 
-
+typedef _Fn = void Function();
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -32,9 +32,19 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
   String _response = 'Press the button to start continuous recording.';
   late Timer? _timer;
 
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  bool _mPlayerIsInited = false;
+  String filePath = "";
+
   @override
   void initState() {
     super.initState();
+    _mPlayer!.openPlayer().then((value) {
+      setState(() {
+        _mPlayerIsInited = true;
+      });
+    });
+
     _requestPermissionsAndInit();
   }
 
@@ -65,19 +75,37 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
     }
   }
 
+  void play() {
+    // print("PLayer path: $completePath");
+    // assert(_mPlayerIsInited &&
+    //     _mplaybackReady &&
+    //     _mRecorder!.isStopped &&
+    //     _mPlayer!.isStopped);
+    _mPlayer!
+        .startPlayer(
+        fromURI: filePath,
+        codec: Codec.defaultCodec,
+        whenFinished: () {
+          setState(() {});
+        })
+        .then((value) {
+      setState(() {});
+    });
+  }
+
   void _startContinuousRecording() async {
     if (!_isRecorderInitialized) return;
     setState(() {
       _response = 'Recording started...';
     });
 
-    const chunkDuration = Duration(seconds: 10);
+    const chunkDuration = Duration(seconds: 15);
 
     // Function to handle recording logic
     Future<void> _recordChunk() async {
       print("Timer Starting");
       final tempDir = await getTemporaryDirectory();
-      final filePath =
+      filePath =
           '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.wav';
       await _audioRecorder.startRecorder(toFile: filePath);
       await Future.delayed(chunkDuration); // Wait for 15 seconds
@@ -107,7 +135,7 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
   Future<void> _uploadFile(String filePath) async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('httpS://06c5-115-186-57-250.ngrok-free.app/threat'));
+          'POST', Uri.parse('http://13.53.61.151:8080/threat'));
       request.files.add(await http.MultipartFile.fromPath('audio', filePath));
       print("Uploading data to server");
       var response = await request.send();
@@ -170,6 +198,15 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
       },
     );
   }
+  void stopPlayer() {
+    _mPlayer!.stopPlayer().then((value) {
+      setState(() {});
+    });
+  }
+  _Fn? getPlaybackFn() {
+
+    return _mPlayer!.isStopped ? play : stopPlayer;
+  }
 
   @override
   void dispose() {
@@ -212,6 +249,20 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
                 ),
               ),
               SizedBox(height: 20),
+              // Row(children: [
+              //   ElevatedButton(
+              //     onPressed: getPlaybackFn(),
+              //     //color: Colors.white,
+              //     //disabledColor: Colors.grey,
+              //     child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+              //   ),
+              //   SizedBox(
+              //     width: 20,
+              //   ),
+              //   Text(_mPlayer!.isPlaying
+              //       ? 'Playback in progress'
+              //       : 'Player is stopped'),
+              // ]),
               // Here the server response is shown on the screen
               Text(
                 _response,

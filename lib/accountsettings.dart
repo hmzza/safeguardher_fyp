@@ -8,6 +8,7 @@ import 'package:safeguardher/helpandsupport.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:safeguardher/utils/imageprovider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'guide.dart';
 
@@ -20,6 +21,8 @@ class AccountSettings extends StatefulWidget {
 
 class _AccountSettingsState extends State<AccountSettings> {
   Uint8List? _image;
+  final _nameController = TextEditingController(); // Controller for the name field
+  String? _name; // Variable to hold the name
 
   void selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
@@ -27,6 +30,19 @@ class _AccountSettingsState extends State<AccountSettings> {
       _image = img;
     });
   }
+  Future<void> _loadName() async {
+    final prefs = await SharedPreferences.getInstance();
+    // Use a default name if none is stored
+    setState(() {
+      _name = prefs.getString('name') ?? 'Your Name';
+    });
+    _nameController.text = _name!;
+  }
+  Future<void> _saveName() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', _nameController.text);
+  }
+
 
   @override
   Widget build(BuildContext context) {

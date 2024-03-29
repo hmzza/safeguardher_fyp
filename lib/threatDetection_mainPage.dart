@@ -107,7 +107,7 @@ class _AudioRecorderUploaderState extends State<AudioRecorderUploader> {
       _isRecording = true;
     });
 
-    const chunkDuration = Duration(seconds: 15);
+    const chunkDuration = Duration(seconds: 10);
 
     // Function to handle recording logic
     Future<void> _recordChunk() async {

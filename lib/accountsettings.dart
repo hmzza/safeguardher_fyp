@@ -5,11 +5,9 @@ import 'package:safeguardher/aboutus.dart';
 import 'package:safeguardher/changepassword.dart';
 import 'package:safeguardher/editprofile.dart';
 import 'package:safeguardher/helpandsupport.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:safeguardher/utils/imageprovider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'guide.dart';
 
 class AccountSettings extends StatefulWidget {

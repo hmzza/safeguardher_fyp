@@ -18,6 +18,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _contactNoController = TextEditingController();
+  final TextEditingController _guardianContact = TextEditingController();
   bool _isLoading = false;
 
   void _signUp() async {
@@ -95,6 +96,7 @@ class _SignUpState extends State<SignUp> {
                   _buildTextField(_contactNoController, 'Contact No', Icons.phone, false),
                   _buildTextField(_passwordController, 'Password', Icons.lock, true),
                   _buildTextField(_confirmPasswordController, 'Confirm Password', Icons.lock, true),
+                  _buildTextField(_guardianContact, 'Guardian Contact', Icons.contact_emergency_outlined, true),
                   SizedBox(height: 20),
                   _isLoading ? CircularProgressIndicator() : _buildSignUpButton(),
                   _buildLoginButton(),
@@ -183,6 +185,7 @@ class _SignUpState extends State<SignUp> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _contactNoController.dispose();
+    _guardianContact.dispose();
     super.dispose();
   }
 }

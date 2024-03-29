@@ -1,5 +1,133 @@
+// import 'package:flutter/material.dart';
+// import 'package:safeguardher/fakecall_incomingcall.dart';
+// import 'package:safeguardher/utils/custom_app_bar.dart';
+//
+// class fakecall extends StatefulWidget {
+//   const fakecall({Key? key}) : super(key: key);
+//
+//   @override
+//   State<fakecall> createState() => _FakeCallState();
+// }
+//
+// class _FakeCallState extends State<fakecall> {
+//   final List<String> items = ['Male', 'Female'];
+//   String? selectedValue = 'Male';
+//
+//   final List<String> language = ['English','Urdu'];
+//   String? selectedlang = 'Urdu';
+//
+//   final myController = TextEditingController();
+//
+//   @override
+//   void dispose() {
+//     myController.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: CustomAppBar(titleText: 'Fake Call Simulator'),
+//       body: Container(
+//         decoration: BoxDecoration(
+//           image: DecorationImage(
+//             image: AssetImage('assets/images/backgroundlogin.png'),
+//             fit: BoxFit.cover,
+//           ),
+//         ),
+//         padding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Image.asset('assets/images/logo.png', width: 200), // Adjust the path and size as needed
+//             SizedBox(height: 40),
+//             TextField(
+//               controller: myController,
+//               decoration: InputDecoration(
+//                 fillColor: Colors.white.withOpacity(0.85),
+//                 filled: true,
+//                 hintText: 'Name',
+//                 border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.circular(25),
+//                   borderSide: BorderSide.none,
+//                 ),
+//               ),
+//             ),
+//             SizedBox(height: 20),
+//             DropdownButtonFormField<String>(
+//               value: selectedValue,
+//               decoration: InputDecoration(
+//                 fillColor: Colors.white.withOpacity(0.85),
+//                 filled: true,
+//                 border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.circular(25),
+//                   borderSide: BorderSide.none,
+//                 ),
+//               ),
+//               items: items.map((String item) {
+//                 return DropdownMenuItem<String>(
+//                   value: item,
+//                   child: Text(item),
+//                 );
+//               }).toList(),
+//               onChanged: (String? value) {
+//                 setState(() {
+//                   selectedValue = value;
+//                 });
+//               },
+//             ),
+//             SizedBox(height: 20),
+//             DropdownButtonFormField<String>(
+//               value: selectedlang,
+//               decoration: InputDecoration(
+//                 fillColor: Colors.white.withOpacity(0.85),
+//                 filled: true,
+//                 border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.circular(25),
+//                   borderSide: BorderSide.none,
+//                 ),
+//               ),
+//               items: language.map((String item) {
+//                 return DropdownMenuItem<String>(
+//                   value: item,
+//                   child: Text(item),
+//                 );
+//               }).toList(),
+//               onChanged: (String? value) {
+//                 setState(() {
+//                   selectedlang = value;
+//                 });
+//               },
+//             ),
+//             SizedBox(height: 40),
+//             ElevatedButton(
+//               style: ElevatedButton.styleFrom(
+//                 foregroundColor: Colors.white, backgroundColor: Colors.redAccent,
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(18.0),
+//                 ),
+//                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+//               ),
+//               child: const Text('Call Now'),
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => fakeCallNow(value: myController.text, selectedGender: selectedValue,),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
-import 'package:safeguardher/fakecall_now.dart';
+import 'package:safeguardher/fakecall_incomingcall.dart';
+import 'package:safeguardher/utils/custom_app_bar.dart';
 
 class fakecall extends StatefulWidget {
   const fakecall({Key? key}) : super(key: key);
@@ -8,152 +136,122 @@ class fakecall extends StatefulWidget {
   State<fakecall> createState() => _FakeCallState();
 }
 
-class _FakeCallState extends State<fakecall>
-{
+class _FakeCallState extends State<fakecall> {
   final List<String> items = ['Male', 'Female'];
   String? selectedValue = 'Male';
 
-  final List<String> language = ['Urdu', 'Punjabi', 'Pashto', 'Sindhi','Balochi'];
+  final List<String> language = ['English', 'Urdu'];
   String? selectedlang = 'Urdu';
 
+  final myController = TextEditingController();
 
-  get selectedItem => null;
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Fake Call Simulator'),
-        backgroundColor: Colors.blueGrey,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: <Widget>[
-
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/backgroundlogin.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
+      appBar: CustomAppBar(titleText: 'Fake Call Simulator'),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/backgroundlogin.png'),
+            fit: BoxFit.cover,
           ),
-          Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.1, right: 65, left: 65 ),
-            child: TextField(
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/logo.png', width: 200), // Adjust the path and size as needed
+            SizedBox(height: 40),
+            TextField(
+              controller: myController,
               decoration: InputDecoration(
-                  fillColor: Colors.grey.shade50,
-                  filled: true,
-                  hintText: 'Name',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5)
-                  )
+                fillColor: Colors.white.withOpacity(0.85),
+                filled: true,
+                hintText: 'Name',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.2, right: 65, left: 65 ),
-            child: Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 240,
-                  height: 50,
-                  child: DropdownButton<String>(
-                    value: selectedValue,
-                    items: items.map((String item) {
-                      return DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(item, style: TextStyle(fontSize: 24)),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedValue = value;
-                      });
-                    },
-                    // Adding decoration for DropdownButton
-                    underline: Container(
-                      height: 2,
-                      color: Colors.white,
-                    ),
-                    icon: Icon(Icons.arrow_drop_down),
-                    iconSize: 36,
-                    isExpanded: true,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                    dropdownColor: Colors.grey,
-                  ),
+            SizedBox(height: 20),
+            DropdownButtonFormField<String>(
+              value: selectedValue,
+              decoration: InputDecoration(
+                fillColor: Colors.white.withOpacity(0.85),
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide: BorderSide.none,
                 ),
-
-              ],
+              ),
+              items: items.map((String item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item),
+                );
+              }).toList(),
+              onChanged: (String? value) {
+                setState(() {
+                  selectedValue = value;
+                });
+              },
             ),
-
-          ),
-          Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.3, right: 65, left: 65 ),
-            child: Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 240,
-                  height: 50,
-                  child: DropdownButton<String>(
-                    value: selectedlang,
-                    items: language.map((String item) {
-                      return DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(item, style: TextStyle(fontSize: 24)),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedlang = value;
-                      });
-                    },
-                    // Adding decoration for DropdownButton
-                    underline: Container(
-                      height: 2,
-                      color: Colors.white,
-                    ),
-                    icon: Icon(Icons.arrow_drop_down),
-                    iconSize: 36,
-                    isExpanded: true,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                    dropdownColor: Colors.grey,
-                  ),
+            SizedBox(height: 20),
+            DropdownButtonFormField<String>(
+              value: selectedlang,
+              decoration: InputDecoration(
+                fillColor: Colors.white.withOpacity(0.85),
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide: BorderSide.none,
                 ),
-
-              ],
+              ),
+              items: language.map((String item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item),
+                );
+              }).toList(),
+              onChanged: (String? value) {
+                setState(() {
+                  selectedlang = value;
+                });
+              },
             ),
-
-          ),
-
-          Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.1,
-                  left: MediaQuery.of(context).size.width * 0.5 - 100, // Centered horizontally
-                      child: Container(
-                        height: 52,
-                        width: 200,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.redAccent,
-                      ),
-                          child: const Text('Call Now'),
-                          onPressed: () {
-                            Navigator.push(context, new MaterialPageRoute(
-                                builder: (context) =>
-                                new fakeCallNow())
-                            );
-
-                          },
-                        ),
-                      ),
-          ),
-
-        ],
+            SizedBox(height: 40),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+              ),
+              child: const Text('Call Now'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => fakeCallNow(
+                      value: myController.text,
+                      selectedGender: selectedValue!,
+                      selectedLang: selectedlang!,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,25 +1,26 @@
-import 'dart:ffi';
-import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safeguardher/aboutus.dart';
+import 'package:safeguardher/changepassword.dart';
+import 'package:safeguardher/editprofile.dart';
+import 'package:safeguardher/helpandsupport.dart';
 import 'package:safeguardher/utils/custom_app_bar.dart';
 import 'package:safeguardher/utils/imageprovider.dart';
-// import 'package:safeguardher/utils/imageprovider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'guide.dart';
 
-class accountsettings extends StatefulWidget {
-  const accountsettings({super.key});
+class AccountSettings extends StatefulWidget {
+  const AccountSettings({Key? key}) : super(key: key);
 
   @override
-  State<accountsettings> createState() => _accountsettingsState();
+  State<AccountSettings> createState() => _AccountSettingsState();
 }
 
-class _accountsettingsState extends State<accountsettings> {
+class _AccountSettingsState extends State<AccountSettings> {
   Uint8List? _image;
-  double temp = 350;
+  final _nameController = TextEditingController(); // Controller for the name field
+  String? _name; // Variable to hold the name
 
   void selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
@@ -27,343 +28,128 @@ class _accountsettingsState extends State<accountsettings> {
       _image = img;
     });
   }
+  Future<void> _loadName() async {
+    final prefs = await SharedPreferences.getInstance();
+    // Use a default name if none is stored
+    setState(() {
+      _name = prefs.getString('name') ?? 'Your Name';
+    });
+    _nameController.text = _name!;
+  }
+  Future<void> _saveName() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', _nameController.text);
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(titleText: 'Settings'),
-        body: Stack(children: <Widget>[
-          //background
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/settingsBackground.png'),
-                fit: BoxFit.cover,
+      appBar: CustomAppBar(titleText: 'Settings', automaticallyImplyLeading: false),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/settingsBackground.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView(
+          children: [
+            SizedBox(height: 20),
+            Center(
+              child: CircleAvatar(
+                radius: 64,
+                backgroundColor: Colors.grey.shade800,
+                backgroundImage: _image != null
+                    ? MemoryImage(_image!)
+                    : AssetImage('assets/images/profile_placeholder.jpg') as ImageProvider,
               ),
             ),
-          ),
-          //Profile picture
-          _image != null
-              ? Positioned(
-              left: 20,
-              top: 20,
-                  child: CircleAvatar(
-                  radius: 64,
-                  backgroundImage: MemoryImage(_image!),
-                ))
-              :
-          Positioned(
-                  left: 20,
-                  top: 20,
-                  child: const CircleAvatar(
-                    radius: 64,
-                    backgroundImage:
-                        AssetImage('assets/images/profile_placeholder.jpg'),
-                  ),
-                ),
-          Positioned(
-            top: 110,
-            left: 110,
-            child: IconButton(
+            TextButton(
               onPressed: selectImage,
-              icon: const Icon(Icons.add_a_photo),
-              color: Colors.white,
-            ),
-          ),
-          //User's Name
-          Positioned(
-            top: 170,
-            left: 25,
-            child: Container(
-              height: 50,
-              width: 550,
-              // margin: EdgeInsets.only(top: 40, left: 35, right: 35, bottom: 100),
-              color: Colors.transparent,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, top: 20),
-                child: Text(
-                  'Saba Karim',
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
+              child: Text(
+                'Change Profile Picture',
+                style: TextStyle(color: Colors.white),
               ),
             ),
-          ),
-          //Divider
-          Positioned(
-            top: 210,
-            child: Container(
-              height: 50,
-              width: 550,
-              // margin: EdgeInsets.only(top: 40, left: 35, right: 35, bottom: 100),
-              color: Colors.transparent,
-              child: Divider(
-                height: 5,
-                thickness: 2,
-                indent: 0,
-                endIndent: 0,
+            Text(
+              'Saba Karim',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
                 color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          //Account heading
-          Positioned(
-            top: 230,
-            left: 25,
-            child: Container(
-              height: 50,
-              width: 550,
-              // margin: EdgeInsets.only(top: 40, left: 35, right: 35, bottom: 100),
-              color: Colors.transparent,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, top: 20),
-                child: Text(
-                  'Account',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              ),
+            Divider(height: 20, thickness: 2, color: Colors.white54),
+            _settingOption(
+              context,
+              title: 'Edit Profile',
+              icon: Icons.edit,
+              destination: EditProfile(),
             ),
-          ),
-          //Account Options
-          Positioned(
-              left: 30,
-              top: 300,
-              child: Container(
-                // margin: EdgeInsets.only(top: 140, left: 30, right: 30, bottom: 0),
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.4),
-
-                  children: [
-                    // padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.4),
-                    Container(
-                      height: 50,
-
-                      width: temp,
-
-                      // margin: EdgeInsets.only(top: 100, left: 35, right: 35, bottom: 100),
-
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(100)),
-
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-
-                          backgroundColor: Colors.white, // Button color
-
-                          // Other style properties
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              'Edit Profile',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 50,
-
-                      width: temp,
-
-                      // margin: EdgeInsets.only(top: 180, left: 35, right: 35, bottom: 100),
-
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(100)),
-
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-
-                          backgroundColor: Colors.white, // Button color
-
-                          // Other style properties
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              'Change your Password',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 50,
-
-                      width: temp,
-
-                      // margin: EdgeInsets.only(top: 260, left: 35, right: 35, bottom: 100),
-
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(100)),
-
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-
-                          backgroundColor: Colors.white, // Button color
-
-                          // Other style properties
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              'Privacy and Security',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 50,
-
-                      width: temp,
-
-                      // margin: EdgeInsets.only(top: 340, left: 35, right: 35, bottom: 100),
-
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(100)),
-
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-
-                          backgroundColor: Colors.white, // Button color
-
-                          // Other style properties
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              'Help & Support',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 50,
-
-                      width: temp,
-
-                      // margin: EdgeInsets.only(top: 420, left: 35, right: 35, bottom: 100),
-
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(100)),
-
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context, new MaterialPageRoute(
-                              builder: (context) =>
-                              new AboutUs())
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-
-                          backgroundColor: Colors.white, // Button color
-
-                          // Other style properties
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              'About Us',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    //LOGOUT BUTTON
-                    Container(
-                      height: 50,
-                      width: 100,
-
-                      // margin: EdgeInsets.only(top: 420, left: 35, right: 35, bottom: 100),
-
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(100)),
-
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-
-                          backgroundColor: Colors.red, // Button color
-
-                          // Other style properties
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              'LOGOUT',
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ))
-
-          //bars
-        ]));
+            _settingOption(
+              context,
+              title: 'Change Password',
+              icon: Icons.lock_outline,
+              destination: ChangePwd(),
+            ),
+            _settingOption(
+              context,
+              title: 'Guide (User Manual)',
+              icon: Icons.menu_book,
+              destination: Guide(), // Placeholder for user manual page
+            ),
+            _settingOption(
+              context,
+              title: 'Help & Support',
+              icon: Icons.help_outline,
+              destination: HelpAndSupport(),
+            ),
+            _settingOption(
+              context,
+              title: 'About Us',
+              icon: Icons.info_outline,
+              destination: AboutUs(),
+            ),
+            _logoutButton(context),
+          ],
+        ),
+      ),
+    );
   }
+
+  Widget _settingOption(BuildContext context, {required String title, required IconData icon, required Widget destination}) {
+    return Material(
+      color: Colors.transparent, // This is important for the ripple effect
+      child: InkWell(
+        splashColor: Colors.white24, // Light white splash color for the ripple effect
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => destination)),
+        child: ListTile(
+          leading: Icon(icon, color: Colors.white),
+          title: Text(title, style: TextStyle(color: Colors.white)),
+          trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _logoutButton(BuildContext context) {
+    return Material(
+      color: Colors.transparent, // This is important for the ripple effect
+      child: InkWell(
+        splashColor: Colors.redAccent.shade200, // Light red splash color for the ripple effect
+        onTap: () {
+          // TODO: Implement logout functionality
+        },
+        child: ListTile(
+          leading: Icon(Icons.exit_to_app, color: Colors.red),
+          title: Text('Logout', style: TextStyle(color: Colors.red)),
+        ),
+      ),
+    );
+  }
+
 }
+
+

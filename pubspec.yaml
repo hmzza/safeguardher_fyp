@@ -30,18 +30,45 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  font_awesome_flutter: ^10.7.0
   #audioplayers: ^5.2.1
   flutter_phone_direct_caller: ^2.1.1
-  url_launcher: ^6.2.2
+  url_launcher: ^6.2.4
   image_picker: ^1.0.4      # check for the latest version
-
-
+  http: ^1.1.0
+  flutter_alarm_clock: ^0.1.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   just_audio: ^0.9.36
-
+  #flutter_sound_lite: ^8.5.0
+  permission_handler: ^11.0.1
+  audio_session: ^0.1.18
+  path_provider: ^2.1.1
+  uuid: ^3.0.7
+  tflite_flutter: ^0.10.4
   icon_forest: ^1.1.8
+  geolocator: ^11.0.0
+  telephony:
+    git:
+      url: https://github.com/suhardik/s_telephony.git
+      ref: develop
+  flutter_background_service: ^5.0.5
+  shared_preferences: ^2.2.2
+  contacts_service: ^0.6.3
+  flutter_sound: ^9.2.13
+  vibration: ^1.8.4
+  carousel_slider: ^4.2.1
+  google_fonts: ^6.2.0
+  page_transition: ^2.1.0
+  photo_view: ^0.14.0
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  fluttertoast: ^8.2.4
+  cloud_firestore: ^4.14.0
+  marquee: ^2.2.3
+
+
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +101,15 @@ flutter:
   assets:
     - assets/Audio/
     - assets/images/
+    - assets/tflite/
+    - assets/images/a.png
+    - assets/images/b.png
+    - assets/images/c.png
+    - assets/images/d.png
+    - assets/images/e.png
+    - assets/images/darkmaroon.png
+    - assets/Audio/
+    - assets/Audio/ringtone.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

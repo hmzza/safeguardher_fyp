@@ -74,7 +74,6 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                 ),
                 ListTile(
                   title: Text('Phone Number', style: TextStyle(color: Colors.white)),
-                  subtitle: Text('03161439569', style: TextStyle(color: Colors.grey)),
                   leading: Icon(Icons.phone, color: Colors.white),
                   trailing: IconButton(
                     icon: Icon(Icons.call, color: Colors.white),
@@ -93,7 +92,6 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                 ),
                 ListTile(
                   title: Text('Phone Number', style: TextStyle(color: Colors.white)),
-                  subtitle: Text('03221439568', style: TextStyle(color: Colors.grey)),
                   leading: Icon(Icons.phone, color: Colors.white),
                   trailing: IconButton(
                     icon: Icon(Icons.call, color: Colors.white),
@@ -112,7 +110,6 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                 ),
                 ListTile(
                   title: Text('Phone Number', style: TextStyle(color: Colors.white)),
-                  subtitle: Text('03165896525', style: TextStyle(color: Colors.grey)),
                   leading: Icon(Icons.phone, color: Colors.white),
                   trailing: IconButton(
                     icon: Icon(Icons.call, color: Colors.white),

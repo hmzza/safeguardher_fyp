@@ -1,16 +1,22 @@
-# safeguardher
+# SafeGuardHER
 
-A new Flutter project.
+## Women’s Safety & Security Mobile App
 
-## Getting Started
+A robust cross-platform mobile application focused on enhancing women’s safety using real-time automated threat detection. This app integrates advanced machine learning, utilizing ensemble modeling and neural network techniques for environmental analysis and risk prediction. Key features include voice-activated SOS for autonomous emergency response, designed to ensure accessibility in critical moments, and REST APIs for seamless integration.
 
-This project is a starting point for a Flutter application.
+> ![image](https://github.com/user-attachments/assets/acac3296-ba41-45e2-8938-9ebf4038e56d)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+>![image](https://github.com/user-attachments/assets/3714b966-b9e4-41fe-a55f-0c28d34f885f)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+>![image](https://github.com/user-attachments/assets/ec79497e-75ba-4549-be7c-9b79739611da)
+
+
+>![image](https://github.com/user-attachments/assets/e3883a2e-eb3c-4bf5-b3d6-88a63bacf575)
+
+
+>![image](https://github.com/user-attachments/assets/4b332af1-de16-4e40-bda4-5b16918d6828)
+
+
+
